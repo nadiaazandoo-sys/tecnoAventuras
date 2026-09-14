@@ -1,0 +1,9 @@
+TECNOAVENTURAS · VERSION LISTA PARA PUBLICAR
+
+Incluye 2.º y 3.º grado y Manos a la Obra.
+La pantalla inicial solicita NOMBRE, APELLIDO y GRADO antes de entrar.
+
+IMPORTANTE: el registro incluido en esta versión guarda una copia local para pruebas.
+La conexión online con Google Sheets y el panel docente se realizará después de publicar la plataforma.
+
+Para publicar en GitHub Pages, subí el contenido de esta carpeta (index.html y este LEEME.txt).

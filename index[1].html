@@ -1,0 +1,1683 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TecnoAventuras · 2.º y 3.º grado</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#eef7ff;color:#26324a}
+header{background:linear-gradient(135deg,#7657d9,#ef72ad);color:white;padding:28px 20px;text-align:center}
+header h1{margin:0;font-size:42px} header p{font-size:20px;margin:8px 0}
+main{max-width:1000px;margin:auto;padding:25px 16px}
+.panel{background:white;border-radius:24px;padding:28px;box-shadow:0 8px 25px #0001;margin-bottom:20px}
+h2{font-size:30px;margin-top:0}
+.grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+.grade{border:0;border-radius:22px;padding:28px 15px;font-size:22px;font-weight:bold;cursor:pointer;color:white;min-height:140px;box-shadow:0 6px 0 #0002}
+.g2{background:#63c174}.g3{background:#f0a43c}.g4{background:#4d9de0}.g5{background:#a66dd4}.g6{background:#ef6576}
+button{font-family:inherit}
+.back{background:#edf0f7;border:0;border-radius:14px;padding:11px 16px;font-size:16px;font-weight:bold;cursor:pointer;margin-bottom:18px}
+.adventures{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.adventure{background:#fff5c9;border:3px solid #f0d86b;border-radius:22px;padding:22px;cursor:pointer;text-align:left;min-height:160px}
+.adventure:hover{transform:translateY(-3px)}
+.icon{font-size:48px;display:block;margin-bottom:10px}
+.adventure strong{font-size:21px}
+.adventure p{margin-bottom:0}
+.notice{background:#e9f7ff;border-radius:18px;padding:18px;line-height:1.5}
+.hidden{display:none}
+</style>
+
+<style>
+.progress{height:16px;background:#e9e9f4;border-radius:20px;overflow:hidden;margin:12px 0 24px}
+#activityBar{height:100%;width:20%;background:linear-gradient(90deg,#63c174,#4d9de0);transition:.3s}
+.toolGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;margin:25px 0}
+.toolCard{background:#f7f3ff;border:4px solid #ddd2ff;border-radius:22px;padding:20px;cursor:pointer;text-align:center;font-size:20px;font-weight:bold;box-shadow:0 4px 0 #cfc3ef;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;line-height:1.25;min-height:82px;width:100%}
+.toolCard:hover{transform:translateY(-3px)}
+.toolCard.correct{background:#d8f8e3;border-color:#48bd75}
+.toolCard.wrong{background:#ffe0e0;border-color:#ef7474}
+.toolEmoji{font-size:62px;display:block;margin-bottom:10px}
+.feedbackBox{padding:18px;border-radius:18px;margin:18px 0;font-size:19px;background:#fff6c9}
+@media (max-width:560px){#routeStations{grid-template-columns:1fr !important}.toolCard{font-size:18px;padding:16px}.toolEmoji{font-size:52px}}
+</style>
+
+<style>
+.cartoonPanel{position:relative;background:#fff;border:3px solid #d9def0;border-radius:18px;padding:8px;overflow:hidden}.panelNum{position:absolute;left:10px;top:8px;width:34px;height:34px;border-radius:50%;background:#31405a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;z-index:2}
+@media(max-width:700px){.cartoonPanel{grid-column:1/-1!important;max-width:none!important}.cartoonPanel svg{max-height:230px}}
+</style>
+
+<style>
+#registroInicio{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#7657d9,#ef72ad);display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.registroCard{width:min(620px,100%);background:#fff;border-radius:28px;padding:32px;box-shadow:0 15px 45px #0004;text-align:center}
+.registroCard h1{margin:0 0 8px;font-size:40px;color:#7657d9}.registroCard p{font-size:19px;line-height:1.45;margin:8px 0 22px}
+.registroForm{display:grid;gap:14px;text-align:left}.registroForm label{font-weight:800;font-size:17px;color:#26324a}.registroForm input,.registroForm select{width:100%;padding:15px 16px;border:3px solid #d9def0;border-radius:14px;font-size:18px;font-family:inherit;background:#fff}
+.registroForm input:focus,.registroForm select:focus{outline:none;border-color:#7657d9}.registroBtn{border:0;border-radius:18px;padding:16px 20px;font-size:20px;font-weight:800;color:#fff;background:#7657d9;cursor:pointer;box-shadow:0 5px 0 #5941a8;margin-top:6px}.registroBtn:hover{transform:translateY(-2px)}
+#registroMensaje{min-height:24px;margin-top:8px;font-weight:700;color:#b43b52}
+#alumnoActivo{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:999px;background:#ffffff2b;font-size:16px}
+@media(max-width:560px){.registroCard{padding:24px 18px}.registroCard h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div id="registroInicio">
+  <div class="registroCard">
+    <div style="font-size:62px">🚀</div>
+    <h1>¡Bienvenido/a a TecnoAventuras!</h1>
+    <p>Antes de comenzar, completá tus datos. Así podremos saber quién está realizando las actividades.</p>
+    <form class="registroForm" id="registroForm">
+      <div><label for="regNombre">Nombre</label><input id="regNombre" type="text" autocomplete="given-name" required placeholder="Escribí tu nombre"></div>
+      <div><label for="regApellido">Apellido</label><input id="regApellido" type="text" autocomplete="family-name" required placeholder="Escribí tu apellido"></div>
+      <div><label for="regGrado">Grado</label><select id="regGrado" required><option value="">Elegí tu grado</option><option value="2">2.º grado</option><option value="3">3.º grado</option></select></div>
+      <button class="registroBtn" type="submit">🎮 Entrar a TecnoAventuras</button>
+      <div id="registroMensaje"></div>
+    </form>
+  </div>
+</div>
+
+<header>
+<h1>🚀 TecnoAventuras</h1>
+<p>Una aventura para aprender Tecnología</p>
+<div id="alumnoActivo"></div>
+</header>
+<main>
+<section id="home" class="panel">
+<h2>🌟 Elegí tu grado</h2>
+<p>Elegí tu grado y comenzá una aventura de Tecnología. ¡Hay desafíos para explorar, pensar, crear y resolver!</p>
+<div class="grades">
+<button class="grade g2" onclick="showGrade(2)">🌱<br>2.º grado</button>
+<button class="grade g3" onclick="showGrade(3)">🌟<br>3.º grado</button>
+</div>
+</section>
+
+<section id="grade" class="panel hidden">
+<button class="back" onclick="goHome()">⬅️ Volver al inicio</button>
+<h2 id="gradeTitle"></h2>
+<div class="notice">🎮 En esta versión estamos construyendo primero el mapa. Elegí una aventura para comprobar que la navegación funciona.</div>
+<div class="adventures" id="adventures"></div>
+</section>
+
+<section id="adventure" class="panel hidden">
+<button class="back" onclick="goGrade()">⬅️ Volver al mapa</button>
+<h2 id="advTitle"></h2>
+<div class="notice">
+🎯 <b>Próximo paso:</b> esta pantalla será el espacio donde construiremos los 5 desafíos interactivos de cada aventura.
+<br><br>
+Por ahora es solamente una pantalla de prueba para verificar que podemos entrar y volver sin errores.
+</div>
+<br>
+<button onclick="goGrade()" style="background:#7657d9;color:white;border:0;border-radius:16px;padding:15px 22px;font-size:18px;font-weight:bold;cursor:pointer">➡️ Volver al mapa de aventuras</button>
+</section>
+
+<section id="activity" class="panel hidden">
+<button class="back" onclick="goGrade()">⬅️ Volver al mapa</button>
+<div class="small">🧰 DETECTIVES DE HERRAMIENTAS · DESAFÍO 1 DE 5</div>
+<div class="progress"><div id="activityBar"></div></div>
+<h2>🎯 La primera pista</h2>
+<p id="activityQuestion" class="intro"></p>
+<div id="activityTools" class="toolGrid"></div>
+<div id="activityFeedback"></div>
+<button id="activityNext" class="next hidden" onclick="goToActivity2()">➡️ Siguiente desafío</button>
+</section>
+</main>
+
+<script>
+// Registro inicial del estudiante. Guarda un registro local para pruebas; la conexión online se agregará en el siguiente paso.
+const TECNO_REGISTRO_URL = "";
+(function(){
+  const form=document.getElementById('registroForm');
+  const overlay=document.getElementById('registroInicio');
+  const msg=document.getElementById('registroMensaje');
+  const activo=document.getElementById('alumnoActivo');
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const nombre=document.getElementById('regNombre').value.trim();
+    const apellido=document.getElementById('regApellido').value.trim();
+    const grado=document.getElementById('regGrado').value;
+    if(!nombre||!apellido||!grado){msg.textContent='Completá nombre, apellido y grado para continuar.';return;}
+    const registro={nombre,apellido,grado:Number(grado),fecha:new Date().toISOString()};
+    try{
+      const lista=JSON.parse(localStorage.getItem('tecno_registros')||'[]');
+      lista.push(registro);
+      localStorage.setItem('tecno_registros',JSON.stringify(lista));
+      sessionStorage.setItem('tecno_alumno',JSON.stringify(registro));
+      if(TECNO_REGISTRO_URL){
+        try{await fetch(TECNO_REGISTRO_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(registro)});}catch(err){}
+      }
+      activo.textContent='👤 '+nombre+' '+apellido+' · '+grado+'.º grado';
+      overlay.style.display='none';
+      showGrade(Number(grado));
+    }catch(err){msg.textContent='No se pudo guardar el registro en este dispositivo. Intentá nuevamente.';}
+  });
+})();
+
+const adventures={
+2:[
+["🧰","Detectives de herramientas","Descubrimos herramientas y sus funciones."],
+["🏠","Tecnología en casa","Reconocemos objetos tecnológicos de todos los días."],
+["🧱","Materiales","Exploramos materiales y sus propiedades."],
+["⚙️","Máquinas que ayudan","Descubrimos cómo las máquinas facilitan tareas."],
+["♻️","Guardianes del ambiente","Pensamos cómo usar la tecnología cuidando el ambiente."],
+["💡","Pequeños inventores","Imaginamos soluciones para problemas cotidianos."],
+["🔐","Tecnología segura","Aprendemos a cuidarnos al usar tecnología."],
+["🏆","Manos a la Obra","Creamos nuestro propio producto tecnológico."]
+],
+3:[
+["🔎","Exploradores tecnológicos","Criterio: objetos tecnológicos. Analizamos necesidades, partes y funciones."],
+["🧪","Laboratorio de materiales","Criterio: materiales y propiedades. Investigamos, comparamos y elegimos materiales."],
+["⚙️","Taller de procesos y máquinas","Criterio: procesos tecnológicos. Observamos transformaciones, herramientas, máquinas y secuencias de trabajo."],
+["⚡","Energía en acción","Criterio: energía en los sistemas tecnológicos. Descubrimos de dónde viene, qué hace funcionar y cómo usarla responsablemente."],
+["📡","Mensajes tecnológicos","Criterio: comunicación y representación tecnológica. Interpretamos símbolos, instrucciones, planos y formas de comunicar ideas."],
+["🧭","Desafíos tecnológicos","Criterio: análisis y resolución de situaciones tecnológicas. Clasificamos, relacionamos, organizamos y resolvemos desafíos."],
+["💡","Ingenios y soluciones","Criterio: análisis, innovación y uso responsable de soluciones tecnológicas."],
+["🏆","Manos a la Obra","Proyecto final: construimos productos tecnológicos con materiales sencillos."]
+]
+};
+
+let currentGrade=2;
+function hideAll(){document.getElementById("home").classList.add("hidden");document.getElementById("grade").classList.add("hidden");document.getElementById("adventure").classList.add("hidden");document.getElementById("activity").classList.add("hidden")}
+function showGrade(g){
+currentGrade=g; hideAll();
+document.getElementById("grade").classList.remove("hidden");
+document.getElementById("gradeTitle").textContent="🌱 "+g+" .º grado — Mapa de aventuras";
+const box=document.getElementById("adventures"); box.innerHTML="";
+adventures[g].forEach((a,i)=>{
+const b=document.createElement("button"); b.className="adventure";
+b.innerHTML=`<span class="icon">${a[0]}</span><strong>${a[1]}</strong><p>${a[2]}</p>`;
+b.onclick=()=>openAdventure(a[1]);
+box.appendChild(b);
+});
+}
+function openAdventure(name){
+if(currentGrade===2 && name==="Detectives de herramientas"){startDetectives();return;}
+if(currentGrade===2 && name==="Tecnología en casa"){startCasa();return;}
+if(currentGrade===2 && name==="Materiales"){startMateriales();return;}
+if(currentGrade===2 && name==="Máquinas que ayudan"){startMaquinas();return;}
+if(currentGrade===2 && name==="Guardianes del ambiente"){startAmbiente();return;}
+if(currentGrade===2 && name==="Pequeños inventores"){startInventores();return;}
+if(currentGrade===2 && name==="Tecnología segura"){startSegura();return;}
+if(currentGrade===2 && name==="Manos a la Obra"){startManos();return;}
+if(currentGrade===3 && name==="Exploradores tecnológicos"){startExploradores();return;}
+if(currentGrade===3 && name==="Laboratorio de materiales"){startMateriales3();return;}
+if(currentGrade===3 && name==="Taller de procesos y máquinas"){startProcesos3();return;}
+if(currentGrade===3 && name==="Energía en acción"){startEnergia3();return;}
+if(currentGrade===3 && name==="Mensajes tecnológicos"){startMensajes3();return;}
+if(currentGrade===3 && name==="Desafíos tecnológicos"){startDesafios3();return;}
+if(currentGrade===3 && name==="Ingenios y soluciones"){startViajeProducto3();return;}
+if(currentGrade===3 && name==="Manos a la Obra"){startManos();return;}
+hideAll();document.getElementById("adventure").classList.remove("hidden");document.getElementById("advTitle").textContent="🕵️ "+name
+}
+function startExploradores(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+let stage=0;
+const q=document.getElementById("activityQuestion"), box=document.getElementById("activityTools"), fb=document.getElementById("activityFeedback"), next=document.getElementById("activityNext");
+function mezclar(arr){return [...arr].sort(()=>Math.random()-0.5);}
+function header(n){document.getElementById("activityBar").style.width=((n+1)*20)+"%";
+  document.querySelector("#activity .small").title="Las opciones cambian de lugar: leé todas antes de elegir.";document.querySelector("#activity .small").textContent=`🔎 EXPLORADORES TECNOLÓGICOS · DESAFÍO ${n+1} DE 5`;next.classList.add("hidden");fb.innerHTML="";}
+function go(n){stage=n;render();}
+function pass(msg, label){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;next.textContent=label;next.onclick=()=>go(stage+1);next.classList.remove("hidden");}
+function render(){
+ header(stage);box.innerHTML="";
+ if(stage===0){
+  q.textContent="🔎 Una tecnología aparece en cada situación. ¿Qué necesidad ayuda a resolver?";
+  const opts=mezclar([["Una bicicleta","Transportarse de un lugar a otro",true],["Una cuchara","Escuchar música",false],["Una linterna","Dormir más rápido",false],["Un cuaderno","Lavar ropa",false]]);
+  opts.forEach(o=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${o[0]==='Una bicicleta'?'🚲':o[0]==='Una cuchara'?'🥄':o[0]==='Una linterna'?'🔦':'📓'}</span><b>${o[0]}</b><br><small>${o[1]}</small>`;b.onclick=()=>{document.querySelectorAll('#activityTools .toolCard').forEach(x=>x.disabled=true);if(o[2])pass('🌟 ¡Correcto! Una bicicleta es un objeto tecnológico pensado, entre otras cosas, para facilitar el traslado.','➡️ Desafío 2');else fb.innerHTML='<div class="feedbackBox">💭 Pensá: ¿para qué necesidad fue creado ese objeto?</div>';};box.appendChild(b);});
+ } else if(stage===1){
+  q.textContent="🧩 Todo objeto tecnológico tiene partes que cumplen funciones. Elegí la relación correcta.";
+  const opts=mezclar([["Tijera → hojas","Sirven para cortar",true],["Lámpara → ruedas","Sirven para trasladarse",false],["Bicicleta → pantalla","Sirve para iluminar",false],["Martillo → cable","Sirve para escribir",false]]);
+  opts.forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">🧩</span>${o[0]}<br><small>${o[1]}</small>`;b.onclick=()=>{document.querySelectorAll('#activityTools .toolCard').forEach(x=>x.disabled=true);if(o[2])pass('👏 ¡Muy bien! Reconociste una parte y la función que cumple.','➡️ Desafío 3');else fb.innerHTML='<div class="feedbackBox">🔍 Observá qué hace realmente cada parte del objeto.</div>';};box.appendChild(b);});
+ } else if(stage===2){
+  q.textContent="🧱 Elegí el material más conveniente para cada objeto según la propiedad que necesita.";
+  const opts=mezclar([["Para una ventana que permita ver a través → vidrio","Vidrio",true],["Para una pelota que debe ser rígida y pesada → papel fino","Papel fino",false],["Para una regla resistente → servilleta","Servilleta",false],["Para una botella que contenga agua → algodón","Algodón",false]]);
+  opts.forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">🧱</span>${o[0]}`;b.onclick=()=>{document.querySelectorAll('#activityTools .toolCard').forEach(x=>x.disabled=true);if(o[2])pass('💡 ¡Correcto! El vidrio es adecuado porque permite ver a través de la ventana.','➡️ Desafío 4');else fb.innerHTML='<div class="feedbackBox">💭 Pensá en la propiedad que necesita el objeto para cumplir su función.</div>';};box.appendChild(b);});
+ } else if(stage===3){
+  q.textContent="🔢 Ordená mentalmente el proceso: ¿qué hacemos primero para usar una bicicleta de manera segura?";
+  const opts=mezclar([["Ponerse casco y revisar que la bicicleta esté en condiciones","Primero",true],["Empezar a pedalear sin mirar","Primero",false],["Guardar la bicicleta","Primero",false],["Frenar después de terminar","Primero",false]]);
+  opts.forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">🚲</span>${o[0]}`;b.onclick=()=>{document.querySelectorAll('#activityTools .toolCard').forEach(x=>x.disabled=true);if(o[2])pass('🧠 ¡Excelente! Antes de usar un objeto tecnológico también podemos pensar una secuencia de acciones seguras.','➡️ Desafío 5');else fb.innerHTML='<div class="feedbackBox">🔢 Antes de comenzar una tarea, pensá qué debemos preparar o revisar.</div>';};box.appendChild(b);});
+ } else {
+  q.innerHTML='<div style="max-width:850px;margin:auto;text-align:left"><h3>💡 Desafío final: mejorá un objeto tecnológico</h3><p>Elegí un objeto que tengas cerca. Pensá: ¿qué problema resuelve?, ¿qué parte funciona bien?, ¿qué cambiarías para mejorarlo?</p><label>Objeto elegido:<input id="obj3" style="width:100%;padding:12px;margin:6px 0 12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></label><label>¿Qué cambiarías y por qué?<textarea id="idea3" rows="3" style="width:100%;padding:12px;margin:6px 0;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label></div>';
+  const b=document.createElement('button');b.className='toolCard';b.textContent='🚀 Presentar mi idea';b.onclick=()=>{if(document.getElementById('obj3').value.trim().length>=2 && document.getElementById('idea3').value.trim().length>=8){fb.innerHTML='<div class="feedbackBox">🏆 ¡Misión cumplida! Analizaste una tecnología y propusiste una mejora. ¡Sos un verdadero explorador tecnológico!</div>';next.classList.add('hidden');document.getElementById('activityBar').style.width='100%';document.querySelector('#activity .small').textContent='🏆 MISIÓN CUMPLIDA';}else fb.innerHTML='<div class="feedbackBox">💭 Escribí el objeto y explicá brevemente qué cambiarías y por qué.</div>';};box.appendChild(b);
+ }
+}
+render();
+}
+function startMateriales3(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+let stage=0;
+const q=document.getElementById("activityQuestion"), box=document.getElementById("activityTools"), fb=document.getElementById("activityFeedback"), next=document.getElementById("activityNext");
+function mezclar(arr){return [...arr].sort(()=>Math.random()-0.5);}
+function header(n){document.getElementById("activityBar").style.width=((n+1)*20)+"%";document.querySelector("#activity .small").textContent=`🧪 LABORATORIO DE MATERIALES · DESAFÍO ${n+1} DE 5`;next.classList.add("hidden");fb.innerHTML="";}
+function pass(msg,label){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;next.textContent=label;next.onclick=()=>{stage++;render()};next.classList.remove("hidden");}
+function fail(msg){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;}
+function render(){header(stage);box.innerHTML="";
+if(stage===0){
+q.textContent="🧪 Observá las pistas. ¿Cuál material es el más adecuado para fabricar un vaso que permita ver el líquido?";
+const opts=mezclar([["Vidrio","Es transparente y permite ver el contenido.",true],["Cartón","No permite ver a través.",false],["Lana","Es flexible y absorbente.",false],["Madera","Es opaca y rígida.",false]]);
+opts.forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">🧪</span><b>${o[0]}</b><br><small>${o[1]}</small>`;b.onclick=()=>{if(o[2])pass('🌟 ¡Correcto! Elegiste el material pensando en una propiedad: la transparencia.','➡️ Desafío 2');else fail('🔍 Volvé a la pista: el vaso debe permitir ver el líquido que contiene.');};box.appendChild(b);});
+}else if(stage===1){
+q.textContent="🎒 Clasificá según la propiedad que necesitamos. ¿Qué objeto necesita un material flexible?";
+const opts=mezclar([["Una gomita para el pelo","Necesita poder doblarse o estirarse.",true],["Una regla de plástico rígido","Necesita mantenerse recta.",false],["Una ventana","Necesita ser transparente.",false],["Una cuchara metálica","Necesita ser resistente y firme.",false]]);
+opts.forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">🎒</span><b>${o[0]}</b><br><small>${o[1]}</small>`;b.onclick=()=>{if(o[2])pass('👏 ¡Muy bien! Relacionaste una necesidad con la propiedad de flexibilidad.','➡️ Desafío 3');else fail('💭 Pensá qué objeto necesita doblarse o estirarse sin romperse.');};box.appendChild(b);});
+}else if(stage===2){
+ document.querySelector('#activity h2').textContent='🧩 Desafío 3: Unimos las partes';
+ q.innerHTML='<p>Arrastrá cada parte hasta el objeto tecnológico al que pertenece.</p><p><b>Leé con atención:</b> no hay que armar una figura difícil; solo reconocer qué parte pertenece a cada objeto.</p>';
+ const area=document.createElement('div'); area.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:800px;margin:18px auto';
+ const groups=[['🚲 Bicicleta',['Rueda','Pedal']],['🔦 Linterna',['Pila','Interruptor']],['📻 Radio',['Botón de volumen','Parlante']]];
+ let remaining=6;
+ groups.forEach(g=>{let boxg=document.createElement('div');boxg.className='feedbackBox';boxg.style.cssText+=';min-height:150px';boxg.innerHTML='<h3>'+g[0]+'</h3><div class="dropzone" style="min-height:65px;border:2px dashed #aaa;border-radius:12px;padding:10px">Arrastrá aquí las 2 partes</div>';let dz=boxg.querySelector('.dropzone');dz.ondragover=e=>e.preventDefault();dz.ondrop=e=>{let id=e.dataTransfer.getData('part');let el=document.getElementById(id);if(el&&el.dataset.object===g[0]){el.remove();let tag=document.createElement('div');tag.textContent=el.dataset.part;tag.style.cssText='display:inline-block;margin:4px;padding:7px 10px;border-radius:8px;background:#fff';dz.appendChild(tag);remaining--;if(remaining===0)advance('🎉 ¡Muy bien! Reconociste las partes de distintos objetos tecnológicos.')}else fb.innerHTML='<div class="feedbackBox">💭 Esa parte no pertenece a ese objeto. Mirá nuevamente el nombre del objeto y la parte.</div>'};area.appendChild(boxg)});
+ const bank=document.createElement('div');bank.style.cssText='display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:850px;margin:18px auto';
+ let parts=[];groups.forEach(g=>g[1].forEach(part=>parts.push([part,g[0]])));parts=mix(parts);
+ parts.forEach((x,i)=>{let b=document.createElement('button');b.id='part'+i;b.draggable=true;b.dataset.object=x[1];b.dataset.part=x[0];b.className='toolCard';b.textContent=x[0];b.ondragstart=e=>e.dataTransfer.setData('part',b.id);bank.appendChild(b)});box.appendChild(area);box.appendChild(document.createElement('hr'));box.appendChild(bank);
+}else if(stage===3){
+q.textContent="⚖️ Compará dos materiales para una misma necesidad. ¿Cuál elegirías para hacer una caja que deba ser liviana pero resistente?";
+const opts=mezclar([["Cartón grueso","Es relativamente liviano y puede ser resistente para una caja.",true],["Servilleta","Es liviana pero demasiado frágil.",false],["Algodón","Es blando y no mantiene la forma de una caja.",false],["Arena suelta","No permite construir fácilmente una caja resistente.",false]]);
+opts.forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">⚖️</span><b>${o[0]}</b><br><small>${o[1]}</small>`;b.onclick=()=>{if(o[2])pass('💡 ¡Excelente! Elegiste considerando dos propiedades al mismo tiempo: peso y resistencia.','➡️ Desafío 5');else fail('⚖️ No alcanza con que sea liviano: también debe poder mantener la forma y resistir.');};box.appendChild(b);});
+}else{
+q.innerHTML='<div style="max-width:850px;margin:auto;text-align:left"><h3>🧪 Desafío final: convertite en diseñador/a de materiales</h3><p>Imaginá un objeto nuevo. Elegí de qué material estaría hecho y explicá qué propiedad necesita para funcionar bien.</p><label>Objeto que imaginaste:<input id="objm3" style="width:100%;padding:12px;margin:6px 0 12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></label><label>Material y propiedad:<textarea id="ideam3" rows="3" style="width:100%;padding:12px;margin:6px 0;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label></div>';
+const b=document.createElement('button');b.className='toolCard';b.textContent='🚀 Presentar mi diseño';b.onclick=()=>{if(document.getElementById('objm3').value.trim().length>=2 && document.getElementById('ideam3').value.trim().length>=10){fb.innerHTML='<div class="feedbackBox">🏆 ¡Misión cumplida! Elegiste un material relacionándolo con una propiedad y una función. ¡Gran trabajo!</div>';next.classList.add('hidden');document.getElementById('activityBar').style.width='100%';document.querySelector('#activity .small').textContent='🏆 MISIÓN CUMPLIDA';}else fail('💭 Escribí el objeto y explicá qué material elegirías y qué propiedad necesita.');};box.appendChild(b);
+}}
+render();
+}
+
+
+function startProcesos3(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+let stage=0;
+const q=document.getElementById("activityQuestion"), box=document.getElementById("activityTools"), fb=document.getElementById("activityFeedback"), next=document.getElementById("activityNext");
+function header(n){document.getElementById("activityBar").style.width=((n+1)*20)+"%";document.querySelector("#activity .small").textContent=`⚙️ TALLER DE PROCESOS Y MÁQUINAS · DESAFÍO ${n+1} DE 5`;next.classList.add("hidden");fb.innerHTML="";}
+function pass(msg,label){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;next.textContent=label;next.onclick=()=>{stage++;render()};next.classList.remove("hidden");}
+function fail(msg){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;}
+function mezclar(a){return [...a].sort(()=>Math.random()-0.5);}
+function render(){header(stage);box.innerHTML="";
+if(stage===0){
+ document.querySelector('#activity h2').textContent='🧩 Armamos el proceso';
+ q.innerHTML='Una persona quiere preparar una tostada. <b>Arrastrá</b> las tarjetas y ordenalas para mostrar un proceso tecnológico posible.';
+ const cards=mezclar([
+  ['🍞','Colocar el pan en la tostadora',1],['🔌','Conectar y encender la tostadora',0],['⏱️','Esperar hasta que el pan esté tostado',2],['🍽️','Retirar la tostada con cuidado',3]
+ ]);
+ box.innerHTML='<div id="procCards" style="display:grid;gap:14px;max-width:820px;margin:auto"></div><p class="small" style="margin-top:12px">Podés mover cada tarjeta con las flechas ⬆️⬇️.</p><button class="toolCard" id="checkOrder" style="max-width:820px;margin:8px auto;display:block">🔍 Comprobar orden</button>';
+ const cont=document.getElementById('procCards');
+ cards.forEach((c,i)=>{const d=document.createElement('div');d.dataset.order=c[2];d.style.cssText='display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:#f7f3ff;border:4px solid #ddd2ff;border-radius:22px;padding:16px 18px;box-sizing:border-box;min-height:96px;width:100%;';d.innerHTML=`<div style="display:flex;align-items:center;gap:12px;min-width:0;text-align:left"><span class="toolEmoji" style="flex:0 0 auto">${c[0]}</span><b style="font-size:19px;line-height:1.35;overflow-wrap:anywhere;white-space:normal">${c[1]}</b></div><div style="display:flex;gap:8px;flex:0 0 auto"><button class="secondary up" type="button" aria-label="Subir">⬆️</button><button class="secondary down" type="button" aria-label="Bajar">⬇️</button></div>`;d.querySelector('.up').onclick=()=>{if(d.previousElementSibling)cont.insertBefore(d,d.previousElementSibling)};d.querySelector('.down').onclick=()=>{if(d.nextElementSibling)cont.insertBefore(d.nextElementSibling,d)};cont.appendChild(d);});
+ document.getElementById('checkOrder').onclick=()=>{const ok=[...cont.children].every((d,i)=>Number(d.dataset.order)===i);if(ok)pass('🏆 ¡Proceso ordenado! Comprendiste que una producción tecnológica necesita una secuencia de acciones.','➡️ Desafío 2');else fail('🔧 Todavía no. Pensá qué acción debe ocurrir antes de poder tostar el pan y cuál sucede al final.');};
+}else if(stage===1){
+ document.querySelector('#activity h2').textContent='🧠 Memoria del taller';
+ q.innerHTML='Encontrá las <b>3 parejas</b>: cada herramienta o máquina debe relacionarse con la acción que ayuda a realizar. ¡Las tarjetas están boca abajo!';
+ const pairs=[['🔨','Martillo','Clavar'],['✂️','Tijera','Cortar'],['🧺','Lavarropas','Lavar ropa']];
+ let deck=mezclar(pairs.flatMap((p,i)=>[[i,p[0],p[1]],[i,'❓',p[2]]]));
+ box.innerHTML='<div id="memory3" style="display:grid;grid-template-columns:repeat(3,minmax(100px,1fr));gap:12px;max-width:700px;margin:auto"></div>';
+ let first=null,matched=0,locked=false;
+ deck.forEach(card=>{const b=document.createElement('button');b.className='toolCard';b.dataset.id=card[0];b.dataset.front=card[1];b.innerHTML='<span class="toolEmoji">❓</span><br><b>Descubrir</b>';b.onclick=()=>{if(locked||b.classList.contains('correct')||b===first)return;b.innerHTML=`<span class="toolEmoji">${card[1]}</span><br><b>${card[2]}</b>`;if(!first){first=b;return;}if(first.dataset.id===b.dataset.id){first.classList.add('correct');b.classList.add('correct');first.disabled=true;b.disabled=true;first=null;matched++;fb.innerHTML='<div class="feedbackBox">🎉 ¡Pareja encontrada!</div>';if(matched===3)pass('🏆 ¡Memoria completa! Relacionaste herramientas y máquinas con acciones tecnológicas.','➡️ Desafío 3');}else{locked=true;fb.innerHTML='<div class="feedbackBox">💭 No forman pareja. Observá y probá con otras dos tarjetas.</div>';setTimeout(()=>{first.innerHTML='<span class="toolEmoji">❓</span><br><b>Descubrir</b>';b.innerHTML='<span class="toolEmoji">❓</span><br><b>Descubrir</b>';first=null;locked=false;},700);}};document.getElementById('memory3').appendChild(b);});
+}else if(stage===2){
+ document.querySelector('#activity h2').textContent='🎬 Antes y después';
+ q.innerHTML='Observá cada situación y elegí <b>qué transformación tecnológica</b> se produjo.';
+ const cases=[['🥕 + 🔪','Zanahoria entera → zanahoria cortada',['Cambió su forma','Cambió a ser transparente','Se convirtió en metal'],0],['🌾 + ⚙️','Granos → harina',['Cambió su forma y tamaño','Se volvió una herramienta','Desapareció sin transformación'],0],['📄 + ✂️','Hoja → figuras de papel',['Cambió su forma','Se convirtió en vidrio','Se hizo más pesada'],0]];
+ let idx=0;
+ function showCase(){const c=cases[idx];box.innerHTML=`<div style="font-size:52px;margin:14px;text-align:center">${c[0]}</div><div class="feedbackBox" style="max-width:820px;margin:0 auto 16px;line-height:1.45">${c[1]}</div><div id="caseOpts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;max-width:820px;margin:15px auto"></div>`;mezclar(c[2].map((x,i)=>[x,i])).forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:92px;padding:18px 20px;font-size:19px;line-height:1.35;white-space:normal;overflow-wrap:anywhere;text-align:left';b.textContent=o[0];b.onclick=()=>{if(o[1]===c[3]){idx++;if(idx===cases.length)pass('🌟 ¡Excelente! Reconociste transformaciones que ocurren en distintos procesos tecnológicos.','➡️ Desafío 4');else {fb.innerHTML='<div class="feedbackBox">✅ ¡Correcto! Vamos con otra transformación.</div>';showCase();}}else fail('🔍 Mirá el antes y el después: ¿qué cambió realmente?');};document.getElementById('caseOpts').appendChild(b);});}
+ showCase();
+}else if(stage===3){
+ document.querySelector('#activity h2').textContent='🧰 La caja del técnico';
+ q.innerHTML='Leé la situación y elegí <b>los tres recursos que realmente usarías</b> para reparar una bicicleta con la cadena floja. Después explicá para qué sirve cada uno.';
+ const resources=mezclar([['🔧','Llave','Sirve para ajustar o aflojar algunas tuercas y tornillos.'],['🪛','Destornillador','Sirve para ajustar o aflojar tornillos.'],['🧽','Trapo','Sirve para limpiar la cadena y retirar suciedad.'],['🥄','Cuchara','Sirve para comer; no es una herramienta adecuada para reparar la bicicleta.'],['📚','Libro','Sirve para leer; no permite realizar la reparación.'],['🎨','Pincel','Sirve para pintar; no es necesario para esta reparación.']]);
+ box.innerHTML='<div id="res3" style="display:grid;grid-template-columns:1fr;gap:14px;max-width:820px;margin:18px auto"></div><div id="sel3" class="feedbackBox" style="margin-top:16px;line-height:1.5;font-size:18px">Recursos elegidos: 0 de 3</div><textarea id="exp3" rows="5" placeholder="Explicá con tus palabras: ¿para qué usarías la llave? ¿Para qué usarías el destornillador? ¿Para qué usarías el trapo?" style="display:block;width:100%;max-width:820px;box-sizing:border-box;padding:15px;border:3px solid #d9def0;border-radius:12px;font-size:17px;line-height:1.45;margin:16px auto"></textarea><button class="toolCard" id="checkRes3" style="width:100%;max-width:820px;min-height:64px;margin:0 auto;display:block;font-size:18px">🛠️ Revisar mi caja</button>';
+ let selected=[];resources.forEach(r=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='width:100%;min-height:105px;padding:18px 22px;text-align:left;display:flex;align-items:flex-start;gap:14px;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;line-height:1.35';b.innerHTML=`<span class="toolEmoji" style="font-size:34px;flex:0 0 auto">${r[0]}</span><span style="display:block;min-width:0"><b style="font-size:19px">${r[1]}</b><br><small style="font-size:16px;line-height:1.4">${r[2]}</small></span>`;b.onclick=()=>{if(selected.includes(r[1])){selected=selected.filter(x=>x!==r[1]);b.classList.remove('correct')}else if(selected.length<3){selected.push(r[1]);b.classList.add('correct')}document.getElementById('sel3').textContent=`Recursos elegidos: ${selected.length} de 3`;};document.getElementById('res3').appendChild(b);});
+ document.getElementById('checkRes3').onclick=()=>{const good=selected.includes('Llave')&&selected.includes('Trapo')&&selected.includes('Destornillador')&&selected.length===3&&document.getElementById('exp3').value.trim().length>=25;if(good)pass('🔧 ¡Muy bien! Elegiste tres recursos adecuados y explicaste sus funciones en una reparación tecnológica.','➡️ Desafío 5');else fail('💭 Revisá las opciones: pensá cuáles ayudan realmente a ajustar o limpiar una bicicleta. Luego explicá sus funciones.');};
+}else{
+ document.querySelector('#activity h2').textContent='💡 Diseñá una máquina que ayude';
+ q.innerHTML='Imaginá una máquina sencilla que ayude a una persona a realizar una tarea. <b>Dibujala</b> y completá su ficha.';
+ box.innerHTML='<canvas id="maqCanvas3" width="900" height="500" style="width:100%;max-width:100%;height:auto;min-height:420px;border:3px dashed #bfc7df;border-radius:14px;background:#fffdf5;touch-action:none"></canvas><p><button id="clearMaq3" class="secondary">🧹 Borrar dibujo</button></p><textarea id="maqFicha3" rows="5" placeholder="Nombre de mi máquina: ...\nTarea que ayuda a realizar: ...\nCómo funciona: ...\nQué necesita para funcionar: ..." style="width:90%;max-width:760px;padding:12px;border:3px solid #d9def0;border-radius:12px;font-size:16px"></textarea><br><button class="toolCard" id="presentMaq3">🚀 Presentar mi máquina</button>';
+ const c=document.getElementById('maqCanvas3'),ctx=c.getContext('2d');ctx.lineWidth=4;ctx.lineCap='round';let drawing=false;function pos(e){const r=c.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*c.width/r.width,y:(t.clientY-r.top)*c.height/r.height};}c.onmousedown=e=>{drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};c.onmousemove=e=>{if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()};c.onmouseup=()=>drawing=false;c.onmouseleave=()=>drawing=false;c.ontouchstart=e=>{e.preventDefault();drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};c.ontouchmove=e=>{e.preventDefault();if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()};c.ontouchend=()=>drawing=false;document.getElementById('clearMaq3').onclick=()=>ctx.clearRect(0,0,c.width,c.height);
+ document.getElementById('presentMaq3').onclick=()=>{if(document.getElementById('maqFicha3').value.trim().length>=45){fb.innerHTML='<div class="feedbackBox">🏆 ¡Misión cumplida! Diseñaste una máquina pensando en una necesidad, una tarea y una forma de funcionar. ⭐ <b>¡Aventura completada!</b></div>';document.getElementById('activityBar').style.width='100%';document.querySelector('#activity .small').textContent='🏆 MISIÓN CUMPLIDA';document.getElementById('activityNext').classList.add('hidden');document.getElementById('presentMaq3').disabled=true;document.getElementById('maqFicha3').disabled=true;}else fail('💭 Completá la ficha con más información: nombre, tarea, funcionamiento y qué necesita para funcionar.');};
+}
+}
+render();
+}
+
+function startDetectives(){
+hideAll();
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="🧰 DETECTIVES DE HERRAMIENTAS · DESAFÍO 1 DE 5";
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+document.getElementById("activityQuestion").textContent="Teki necesita encontrar la herramienta correcta. ¿Cuál usamos principalmente para clavar un clavo?";
+const tools=[
+["🔨","Martillo",true],["✂️","Tijera",false],["📏","Regla",false],["🪛","Destornillador",false]
+];
+const box=document.getElementById("activityTools");box.innerHTML="";
+tools.forEach(t=>{
+const b=document.createElement("button");b.className="toolCard";
+b.innerHTML='<span class="toolEmoji">'+t[0]+'</span>'+t[1];
+b.onclick=()=>answerDetective(b,t[2]);
+box.appendChild(b);
+});
+}
+function answerDetective(btn,ok){
+document.querySelectorAll("#activityTools .toolCard").forEach(b=>b.disabled=true);
+if(ok){
+btn.classList.add("correct");
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Muy bien! El martillo se usa para clavar clavos. Encontraste la primera pista. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").classList.remove("hidden");
+}else{
+btn.classList.add("wrong");
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Esa no es. Mirá las herramientas y pensá cuál sirve para golpear y clavar.</div><button onclick="startDetectives()">🔄 Intentar nuevamente</button>';
+}
+}
+function goToActivity2(){
+document.getElementById("activityBar").style.width="40%";
+document.querySelector("#activity .small").textContent="🧰 DETECTIVES DE HERRAMIENTAS · DESAFÍO 2 DE 5";
+document.querySelector("#activity h2").textContent="🖱️ ¡Relacionamos!";
+document.getElementById("activityQuestion").innerHTML="Hacé clic en una <b>herramienta</b> y después en la <b>función</b> que le corresponde. Completá las 4 parejas.";
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+
+const tools=[
+["🔨","Martillo","clavar"],
+["✂️","Tijera","cortar"],
+["📏","Regla","medir"],
+["🪛","Destornillador","ajustar"]
+];
+const uses=[
+["📌","Sirve para clavar.","clavar"],
+["✂️","Sirve para cortar.","cortar"],
+["📐","Sirve para medir.","medir"],
+["🔩","Sirve para ajustar tornillos.","ajustar"]
+];
+
+let selected=null, matched=0;
+const box=document.getElementById("activityTools");
+box.innerHTML=`
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:850px;margin:auto">
+<div>
+<h3 style="background:#e8f2ff;padding:12px;border-radius:14px">🧰 Herramientas</h3>
+<div id="toolSide"></div>
+</div>
+<div>
+<h3 style="background:#fff0c9;padding:12px;border-radius:14px">🎯 ¿Para qué sirve?</h3>
+<div id="useSide"></div>
+</div>
+</div>`;
+
+const ts=document.getElementById("toolSide"), us=document.getElementById("useSide");
+tools.forEach(t=>{
+const b=document.createElement("button");
+b.className="toolCard"; b.dataset.match=t[2];
+b.innerHTML=`<span class="toolEmoji">${t[0]}</span>${t[1]}`;
+b.onclick=()=>{
+if(b.classList.contains("correct"))return;
+document.querySelectorAll("#toolSide .toolCard").forEach(x=>x.style.outline="none");
+b.style.outline="5px solid #ff70ad";
+selected=b;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">👆 Ahora elegí la función que corresponde.</div>';
+};
+ts.appendChild(b);
+});
+uses.forEach(u=>{
+const b=document.createElement("button");
+b.className="toolCard"; b.dataset.match=u[2];
+b.innerHTML=`<span class="toolEmoji">${u[0]}</span>${u[1]}`;
+b.onclick=()=>{
+if(!selected || b.classList.contains("correct"))return;
+if(selected.dataset.match===b.dataset.match){
+selected.classList.add("correct"); b.classList.add("correct");
+selected.style.outline="none"; selected.disabled=true; b.disabled=true;
+matched++; selected=null;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Pareja correcta! Seguí con las demás.</div>';
+if(matched===4){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Relacionaste las 4 herramientas correctamente. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goToActivity3;
+document.getElementById("activityNext").classList.remove("hidden");
+}
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Esa función no corresponde a esa herramienta. Probá otra.</div>';
+}
+};
+us.appendChild(b);
+});
+}
+
+
+
+function goToActivity3(){
+document.getElementById("activityBar").style.width="60%";
+document.querySelector("#activity .small").textContent="🧰 DETECTIVES DE HERRAMIENTAS · DESAFÍO 3 DE 5";
+document.querySelector("#activity h2").textContent="🔎 ¡Sopa de letras!";
+document.getElementById("activityQuestion").innerHTML="Encontrá las <b>4 herramientas</b>. Las palabras están escondidas en distintas partes del cuadro.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Buscá: <b>MARTILLO</b> · <b>TIJERA</b> · <b>REGLA</b> · <b>PINZA</b>. Podés mirar la lista mientras buscás.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+
+const grid=[
+["A","B","C","M","A","R","T","I","L","L","O","D","E","F"],
+["G","H","I","J","K","L","M","N","O","P","Q","R","S","T"],
+["U","V","W","X","Y","Z","A","B","C","D","E","F","G","H"],
+["I","J","K","T","I","J","E","R","A","L","M","N","O","P"],
+["Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D"],
+["E","F","G","H","I","J","K","L","M","N","O","P","Q","R"],
+["S","T","U","V","W","X","Y","Z","A","B","C","D","E","F"],
+["G","H","I","J","K","L","M","N","O","P","Q","R","S","T"],
+["U","V","W","X","Y","Z","A","B","C","D","E","F","G","H"],
+["R","E","G","L","A","I","J","K","M","N","O","P","Q","S"],
+["T","U","V","W","X","Y","Z","A","B","C","D","E","F","G"],
+["H","I","J","K","L","M","N","P","Q","R","S","T","U","V"],
+["W","X","Y","P","I","N","Z","A","B","C","D","E","F","G"],
+["H","I","J","K","L","M","N","O","P","Q","R","S","T","U"]
+];
+
+const positions={
+"MARTILLO":[[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[0,10]],
+"TIJERA":[[3,3],[3,4],[3,5],[3,6],[3,7],[3,8]],
+"REGLA":[[9,0],[9,1],[9,2],[9,3],[9,4]],
+"PINZA":[[12,3],[12,4],[12,5],[12,6],[12,7]]
+};
+
+let selected=[];
+let found={};
+
+const box=document.getElementById("activityTools");
+box.innerHTML=`
+<div style="max-width:760px;margin:15px auto;">
+  <div style="display:grid;grid-template-columns:repeat(14,minmax(28px,1fr));gap:5px;width:100%;box-sizing:border-box;" id="wordGrid"></div>
+</div>
+<div id="wordStatus" style="text-align:center;font-weight:bold;margin:15px"></div>`;
+
+const wg=document.getElementById("wordGrid");
+
+grid.forEach((row,r)=>{
+row.forEach((letter,c)=>{
+const btn=document.createElement("button");
+btn.textContent=letter;
+btn.dataset.r=r;
+btn.dataset.c=c;
+btn.style.cssText="width:100%;aspect-ratio:1/1;min-width:0;padding:0;border:2px solid #d9def0;border-radius:7px;background:white;font-size:clamp(12px,2vw,18px);font-weight:bold;cursor:pointer;box-sizing:border-box";
+btn.onclick=()=>{
+if(btn.disabled)return;
+btn.style.background="#ffd36e";
+selected.push([r,c]);
+checkWord();
+};
+wg.appendChild(btn);
+});
+});
+
+function sameSet(a,b){
+return a.length===b.length && b.every(p=>a.some(s=>s[0]===p[0]&&s[1]===p[1]));
+}
+
+function checkWord(){
+for(const word of Object.keys(positions)){
+if(found[word])continue;
+if(sameSet(selected,positions[word])){
+found[word]=true;
+positions[word].forEach(p=>{
+const idx=p[0]*14+p[1];
+wg.children[idx].style.background="#8ee6a1";
+wg.children[idx].disabled=true;
+});
+selected=[];
+document.getElementById("wordStatus").textContent=`⭐ Encontraste ${Object.keys(found).length} de 4 palabras.`;
+document.getElementById("activityFeedback").innerHTML=`<div class="feedbackBox">🎉 ¡Encontraste <b>${word}</b>! Buscá la siguiente.</div>`;
+if(Object.keys(found).length===4){
+document.getElementById("wordStatus").textContent="🏆 ¡Encontraste las 4 herramientas!";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Encontraste las 4 herramientas. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goToActivity4;
+document.getElementById("activityNext").classList.remove("hidden");
+}
+return;
+}
+}
+
+if(selected.length>=8){
+selected.forEach(p=>{
+const idx=p[0]*14+p[1];
+if(!wg.children[idx].disabled)wg.children[idx].style.background="white";
+});
+selected=[];
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Esa combinación no forma una palabra. Volvé a buscar.</div>';
+}
+}
+}
+function goToActivity4(){
+document.getElementById("activityBar").style.width="80%";
+document.querySelector("#activity .small").textContent="🧰 DETECTIVES DE HERRAMIENTAS · DESAFÍO 4 DE 5";
+document.querySelector("#activity h2").textContent="🧩 Ordenamos los pasos";
+document.getElementById("activityQuestion").innerHTML="Hacé clic en los pasos en el orden correcto para usar el martillo con cuidado.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Primero nos protegemos. Después preparamos el clavo y recién luego usamos el martillo.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+
+const correct=[
+"🦺 Ponerse los elementos de protección.",
+"📍 Colocar el clavo en el lugar.",
+"✋ Sostener el clavo con cuidado.",
+"🔨 Golpear el clavo con el martillo."
+];
+const order=[correct[2],correct[0],correct[3],correct[1]];
+let step=0;
+
+document.getElementById("activityTools").innerHTML='<div id="stepsBox" style="display:flex;flex-direction:column;gap:12px;max-width:650px;margin:20px auto"></div><div id="stepStatus" style="text-align:center;font-weight:bold;margin:15px"></div>';
+const sb=document.getElementById("stepsBox");
+
+order.forEach(text=>{
+const btn=document.createElement("button");
+btn.textContent=text;
+btn.style.cssText="padding:18px;border:3px solid #d9def0;border-radius:14px;background:white;font-size:18px;text-align:left;cursor:pointer";
+btn.onclick=()=>{
+if(text!==correct[step]){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Todavía no. Pensá qué paso debería ir primero. ¡Podés volver a intentar!</div>';
+return;
+}
+btn.disabled=true;
+btn.style.opacity=".55";
+step++;
+document.getElementById("stepStatus").textContent=`✅ ${step} de 4 pasos correctos`;
+if(step===4){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Ordenaste los 4 pasos correctamente. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goToActivity5;
+document.getElementById("activityNext").classList.remove("hidden");
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Muy bien! Ahora elegí el siguiente paso.</div>';
+}
+};
+sb.appendChild(btn);
+});
+}
+
+function goToActivity5(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🧰 DETECTIVES DE HERRAMIENTAS · DESAFÍO 5 DE 5";
+document.querySelector("#activity h2").textContent="✏️ ¿Para qué sirve cada herramienta?";
+document.getElementById("activityQuestion").innerHTML="MirÁ cada herramienta y escribí para qué sirve. <b>Hay una respuesta para cada imagen.</b>";
+document.getElementById("activityNext").classList.add("hidden");
+
+const preguntas=[
+{icon:"🔨",nombre:"MARTILLO",texto:"El martillo sirve para…",acepta:["clavar","clavo"]},
+{icon:"✂️",nombre:"TIJERA",texto:"La tijera sirve para…",acepta:["cortar"]},
+{icon:"📏",nombre:"REGLA",texto:"La regla sirve para…",acepta:["medir"]},
+{icon:"🔧",nombre:"DESTORNILLADOR",texto:"El destornillador sirve para…",acepta:["ajustar","tornillo","atornillar"]}
+];
+
+let actual=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="writtenTool" style="max-width:700px;margin:10px auto"></div><div id="writtenStatus" style="text-align:center;font-weight:bold;margin:12px"></div>';
+
+function mostrarPregunta(){
+const p=preguntas[actual];
+document.getElementById("writtenTool").innerHTML=`
+<div style="background:#fff;border:3px solid #d9def0;border-radius:18px;padding:22px;text-align:center">
+  <div style="font-size:72px;margin-bottom:8px">${p.icon}</div>
+  <div style="font-size:20px;font-weight:bold;margin-bottom:10px">${p.nombre}</div>
+  <div style="font-size:20px;margin-bottom:14px">${p.texto}</div>
+  <input id="writtenAnswer" type="text" autocomplete="off" placeholder="Escribí tu respuesta aquí"
+    style="width:90%;max-width:500px;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px">
+  <br><br>
+  <button id="checkWritten" class="primary">Comprobar respuesta</button>
+</div>`;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá qué podemos hacer con esta herramienta.</div>';
+document.getElementById("writtenStatus").textContent=`Herramienta ${actual+1} de ${preguntas.length}`;
+
+document.getElementById("checkWritten").onclick=()=>{
+const ans=document.getElementById("writtenAnswer").value.trim().toLowerCase();
+if(p.acepta.some(x=>ans.includes(x))){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Muy bien! Tu respuesta es correcta.</div>';
+document.getElementById("writtenAnswer").disabled=true;
+document.getElementById("checkWritten").disabled=true;
+actual++;
+if(actual<preguntas.length){
+document.getElementById("activityNext").textContent="Siguiente herramienta ➜";
+document.getElementById("activityNext").onclick=mostrarPregunta;
+document.getElementById("activityNext").classList.remove("hidden");
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Respondiste las 4 herramientas. ⭐ <b>¡Aventura completada!</b></div>';
+document.getElementById("activityNext").textContent="🎉 Terminar aventura";
+document.getElementById("activityNext").onclick=finishDetectives;
+document.getElementById("activityNext").classList.remove("hidden");
+}
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Revisá tu respuesta. Pensá para qué usamos esta herramienta y volvé a intentarlo.</div>';
+}
+};
+}
+mostrarPregunta();
+}
+
+function finishDetectives(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";
+document.getElementById("activityQuestion").innerHTML="";
+document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones, detective!<br><br>Completaste los 5 desafíos de <b>Detectives de herramientas</b>. 🌟<br><br>⭐ ¡Misión cumplida!</div>';
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+}
+
+function startCasa(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="🏠 TECNOLOGÍA EN CASA · DESAFÍO 1 DE 5";
+document.querySelector("#activity h2").textContent="🏠 ¿Qué objeto tecnológico usamos?";
+document.getElementById("activityQuestion").innerHTML="En casa queremos guardar los alimentos para que duren más. <b>¿Cuál de estos objetos tecnológicos nos ayuda?</b>";
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+const options=[["🧊","Heladera",true],["🪑","Silla",false],["🧸","Muñeco",false],["🌱","Planta",false]];
+const box=document.getElementById("activityTools");box.innerHTML="";
+options.forEach(o=>{
+const b=document.createElement("button");b.className="toolCard";
+b.innerHTML=`<span class="toolEmoji">${o[0]}</span>${o[1]}`;
+b.onclick=()=>{
+if(o[2]){
+b.classList.add("correct");
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Muy bien! La heladera es un objeto tecnológico que ayuda a conservar los alimentos. ⭐ <b>+10 puntos</b></div>';
+document.querySelectorAll("#activityTools .toolCard").forEach(x=>x.disabled=true);
+document.getElementById("activityNext").onclick=goCasa2;
+document.getElementById("activityNext").classList.remove("hidden");
+}else{
+b.classList.add("wrong");
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Ese objeto no cumple esa función. Pensá cuál ayuda a conservar los alimentos.</div>';
+}
+};
+box.appendChild(b);
+});
+}
+
+function goCasa2(){
+document.getElementById("activityBar").style.width="40%";
+document.querySelector("#activity .small").textContent="🏠 TECNOLOGÍA EN CASA · DESAFÍO 2 DE 5";
+document.querySelector("#activity h2").textContent="🖱️ ¡Unimos y pensamos!";
+document.getElementById("activityQuestion").innerHTML="Elegí un objeto de la izquierda y después buscá entre las opciones mezcladas la función que le corresponde. <b>¡No están en el mismo orden!</b>";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Primero elegí un objeto. Después pensá qué tarea realiza.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+
+const objs=[
+["💡","Lámpara","iluminar"],
+["🧹","Escoba","limpiar"],
+["🧊","Heladera","conservar"],
+["📺","Televisor","informar"]
+];
+const funcs=[
+["🥕","Sirve para conservar los alimentos.","conservar"],
+["✨","Sirve para limpiar el piso.","limpiar"],
+["📺","Sirve para mirar programas y recibir información.","informar"],
+["💡","Sirve para iluminar un lugar.","iluminar"]
+];
+
+let selected=null,matched=0;
+const box=document.getElementById("activityTools");
+box.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:850px;margin:auto">
+<div><h3 style="background:#e8f2ff;padding:12px;border-radius:14px">🏠 OBJETOS</h3><div id="casaObj"></div></div>
+<div><h3 style="background:#fff0c9;padding:12px;border-radius:14px">🎯 FUNCIONES MEZCLADAS</h3><div id="casaFun"></div></div></div>`;
+
+const left=document.getElementById("casaObj");
+const right=document.getElementById("casaFun");
+
+objs.forEach(o=>{
+const b=document.createElement("button");
+b.className="toolCard";
+b.dataset.match=o[2];
+b.innerHTML=`<span class="toolEmoji">${o[0]}</span>${o[1]}`;
+b.onclick=()=>{
+if(b.disabled)return;
+document.querySelectorAll("#casaObj .toolCard").forEach(x=>x.style.outline="none");
+b.style.outline="5px solid #ff70ad";
+selected=b;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">👆 Ahora buscá la función que corresponde entre las opciones mezcladas.</div>';
+};
+left.appendChild(b);
+});
+
+funcs.forEach(f=>{
+const b=document.createElement("button");
+b.className="toolCard";
+b.dataset.match=f[2];
+b.innerHTML=`<span class="toolEmoji">${f[0]}</span>${f[1]}`;
+b.onclick=()=>{
+if(!selected||b.disabled)return;
+if(selected.dataset.match===b.dataset.match){
+selected.classList.add("correct");
+b.classList.add("correct");
+selected.disabled=true;
+b.disabled=true;
+selected.style.outline="none";
+selected=null;
+matched++;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Muy bien! Encontraste la función correcta.</div>';
+if(matched===4){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Relacionaste los 4 objetos con sus funciones. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goCasa3;
+document.getElementById("activityNext").classList.remove("hidden");
+}
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 No corresponde a ese objeto. Pensá qué tarea realiza y probá con otra.</div>';
+}
+};
+right.appendChild(b);
+});
+}
+
+function goCasa3(){
+document.getElementById("activityBar").style.width="60%";
+document.querySelector("#activity .small").textContent="🏠 TECNOLOGÍA EN CASA · DESAFÍO 3 DE 5";
+document.querySelector("#activity h2").textContent="🔎 ¿Tecnológico o no tecnológico?";
+document.getElementById("activityQuestion").innerHTML="Observá cada imagen y decidí si es un objeto <b>TECNOLÓGICO</b> o <b>NO TECNOLÓGICO</b>.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Recordá: un objeto tecnológico es creado o transformado por las personas para ayudarnos a realizar una tarea o satisfacer una necesidad.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+
+const items=[
+["🧊","Heladera",true],
+["🌳","Árbol",false],
+["📺","Televisor",true],
+["🪨","Piedra",false],
+["🧹","Escoba",true],
+["🌷","Flor",false],
+["✏️","Lápiz",true],
+["🍎","Manzana",false]
+];
+
+let i=0,aciertos=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="clasif" style="max-width:700px;margin:auto"></div><div id="clasifStatus" style="text-align:center;font-weight:bold;margin:15px"></div>';
+
+function show(){
+const x=items[i];
+document.getElementById("clasif").innerHTML=`<div style="text-align:center;background:white;border:3px solid #d9def0;border-radius:18px;padding:25px">
+<div style="font-size:78px">${x[0]}</div><h3 style="font-size:23px">${x[1]}</h3>
+<button id="yes" class="primary" style="margin:6px">💻 TECNOLÓGICO</button>
+<button id="no" class="primary" style="margin:6px">🌿 NO TECNOLÓGICO</button>
+</div>`;
+document.getElementById("clasifStatus").textContent=`Objeto ${i+1} de ${items.length}`;
+document.getElementById("yes").onclick=()=>answer(x,true);
+document.getElementById("no").onclick=()=>answer(x,false);
+}
+
+function answer(x,val){
+if(val===x[2]){
+aciertos++;i++;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Correcto! Muy bien pensado.</div>';
+if(i===items.length){
+document.getElementById("clasif").innerHTML='<div style="text-align:center;font-size:24px">🎉 ¡Clasificaste todos los objetos!</div>';
+document.getElementById("clasifStatus").textContent=`🏆 ${aciertos} de ${items.length} correctos`;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Clasificaste correctamente todos los objetos. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goCasa4;
+document.getElementById("activityNext").classList.remove("hidden");
+}else{
+setTimeout(show,450);
+}
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 No te apures. Pensá: ¿fue creado o transformado por las personas para ayudarnos en alguna tarea?</div>';
+}
+}
+show();
+}
+
+function goCasa4(){
+document.getElementById("activityBar").style.width="80%";
+document.querySelector("#activity .small").textContent="🏠 TECNOLOGÍA EN CASA · DESAFÍO 4 DE 5";
+document.querySelector("#activity h2").textContent="🧩 Ordenamos una tarea";
+document.getElementById("activityQuestion").innerHTML="Ordená los pasos para preparar un vaso de jugo usando tecnología de manera segura.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá qué necesitamos preparar primero y qué hacemos después.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const correct=["🥤 Preparar el vaso y los ingredientes.","🧃 Usar el exprimidor o licuadora con ayuda de un adulto.","💧 Servir el jugo en el vaso.","🧽 Limpiar y guardar los elementos."];
+const order=[correct[2],correct[0],correct[3],correct[1]];
+let step=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="casaSteps" style="display:flex;flex-direction:column;gap:12px;max-width:700px;margin:20px auto"></div><div id="casaStepStatus" style="text-align:center;font-weight:bold;margin:12px"></div>';
+order.forEach(text=>{
+const b=document.createElement("button");b.textContent=text;
+b.style.cssText="padding:18px;border:3px solid #d9def0;border-radius:14px;background:white;font-size:18px;text-align:left;cursor:pointer";
+b.onclick=()=>{
+if(text!==correct[step]){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Ese paso todavía no. Pensá qué debemos hacer antes. ¡Intentá nuevamente!</div>';return;
+}
+b.disabled=true;b.style.opacity=".55";step++;
+document.getElementById("casaStepStatus").textContent=`✅ ${step} de 4 pasos correctos`;
+if(step===4){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Ordenaste la tarea correctamente. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goCasa5;document.getElementById("activityNext").classList.remove("hidden");
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Muy bien! Elegí el siguiente paso.</div>';
+};document.getElementById("casaSteps").appendChild(b);
+});
+}
+
+function goCasa5(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🏠 TECNOLOGÍA EN CASA · DESAFÍO 5 DE 5";
+document.querySelector("#activity h2").textContent="✏️ Escribimos sobre objetos de casa";
+document.getElementById("activityQuestion").innerHTML="Escribí para qué sirve cada objeto. Hay una respuesta para cada imagen.";
+document.getElementById("activityNext").classList.add("hidden");
+const preguntas=[
+{icon:"💡",nombre:"LÁMPARA",texto:"La lámpara sirve para…",acepta:["iluminar","luz"]},
+{icon:"🧹",nombre:"ESCOBA",texto:"La escoba sirve para…",acepta:["limpiar","barrer"]},
+{icon:"🧊",nombre:"HELADERA",texto:"La heladera sirve para…",acepta:["conservar","enfriar","guardar"]},
+{icon:"📺",nombre:"TELEVISOR",texto:"El televisor sirve para…",acepta:["mirar","informar","ver"]}
+];
+let actual=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="casaWritten" style="max-width:700px;margin:10px auto"></div><div id="casaWrittenStatus" style="text-align:center;font-weight:bold;margin:12px"></div>';
+function mostrar(){
+const p=preguntas[actual];
+document.getElementById("casaWritten").innerHTML=`<div style="background:#fff;border:3px solid #d9def0;border-radius:18px;padding:22px;text-align:center">
+<div style="font-size:72px">${p.icon}</div><div style="font-size:20px;font-weight:bold">${p.nombre}</div>
+<div style="font-size:20px;margin:12px">${p.texto}</div>
+<input id="casaAnswer" type="text" placeholder="Escribí tu respuesta aquí" style="width:90%;max-width:500px;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px">
+<br><br><button id="casaCheck" class="primary">Comprobar respuesta</button></div>`;
+document.getElementById("casaWrittenStatus").textContent=`Objeto ${actual+1} de ${preguntas.length}`;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá qué podemos hacer con este objeto.</div>';
+document.getElementById("casaCheck").onclick=()=>{
+const ans=document.getElementById("casaAnswer").value.trim().toLowerCase();
+if(p.acepta.some(x=>ans.includes(x))){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Muy bien! Respuesta correcta.</div>';
+document.getElementById("casaAnswer").disabled=true;document.getElementById("casaCheck").disabled=true;
+actual++;
+if(actual<preguntas.length){
+document.getElementById("activityNext").textContent="Siguiente objeto ➜";
+document.getElementById("activityNext").onclick=mostrar;document.getElementById("activityNext").classList.remove("hidden");
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Respondiste sobre los 4 objetos. ⭐ <b>¡Aventura completada!</b></div>';
+document.getElementById("activityNext").textContent="🎉 Terminar aventura";
+document.getElementById("activityNext").onclick=finishCasa;document.getElementById("activityNext").classList.remove("hidden");
+}
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Revisá tu respuesta y pensá para qué usamos este objeto.</div>';
+};
+}
+mostrar();
+}
+
+function finishCasa(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";
+document.querySelector("#activity h2").textContent="🏠 ¡Tecnología en casa!";
+document.getElementById("activityQuestion").innerHTML="";
+document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones!<br><br>Completaste los 5 desafíos de <b>Tecnología en casa</b>. 🌟<br><br>⭐ ¡Misión cumplida!</div>';
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+}
+
+
+function startMateriales(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="🧱 MATERIALES · DESAFÍO 1 DE 5";
+document.querySelector("#activity h2").textContent="🕵️ La pista misteriosa";
+document.getElementById("activityQuestion").innerHTML="Leé la pista y descubrí de qué material hablamos.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pista: soy transparente, puedo romperme si me caigo y muchas ventanas están hechas con este material.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const opts=[["🪟","VIDRIO",true],["🧸","TELA",false],["🥄","MADERA",false],["🧱","LADRILLO",false]];
+const box=document.getElementById("activityTools");box.innerHTML="";
+opts.forEach(o=>{
+const b=document.createElement("button");b.className="toolCard";
+b.innerHTML=`<span class="toolEmoji">${o[0]}</span>${o[1]}`;
+b.onclick=()=>{
+if(o[2]){
+b.classList.add("correct");document.querySelectorAll("#activityTools .toolCard").forEach(x=>x.disabled=true);
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Correcto! La respuesta es VIDRIO. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goMat2;document.getElementById("activityNext").classList.remove("hidden");
+}else{
+b.classList.add("wrong");document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Esa no es. Volvé a leer la pista y probá otra opción.</div>';
+}
+};box.appendChild(b);
+});
+}
+
+function goMat2(){
+document.getElementById("activityBar").style.width="40%";
+document.querySelector("#activity .small").textContent="🧱 MATERIALES · DESAFÍO 2 DE 5";
+document.querySelector("#activity h2").textContent="🧺 ¡A clasificar materiales!";
+document.getElementById("activityQuestion").innerHTML="Colocá cada material en el grupo que corresponda: <b>DURO</b> o <b>BLANDO</b>.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá cómo se siente cada material al tocarlo o apretarlo.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const items=[
+["🪨","Piedra","duro"],["🧸","Tela","blando"],["🧱","Ladrillo","duro"],["🧶","Lana","blando"],["🥄","Metal","duro"],["🧽","Esponja","blando"]
+];
+let idx=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="matSort" style="max-width:760px;margin:auto"></div><div id="matSortStatus" style="text-align:center;font-weight:bold;margin:12px"></div>';
+function show(){
+const x=items[idx];
+document.getElementById("matSort").innerHTML=`<div style="text-align:center;background:white;border:3px solid #d9def0;border-radius:18px;padding:25px">
+<div style="font-size:72px">${x[0]}</div><h3>${x[1]}</h3>
+<button id="hard" class="primary" style="margin:6px">🪨 DURO</button>
+<button id="soft" class="primary" style="margin:6px">🧸 BLANDO</button></div>`;
+document.getElementById("matSortStatus").textContent=`Material ${idx+1} de ${items.length}`;
+document.getElementById("hard").onclick=()=>answer(x,"duro");
+document.getElementById("soft").onclick=()=>answer(x,"blando");
+}
+function answer(x,val){
+if(val===x[2]){
+idx++;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Correcto! Muy bien observado.</div>';
+if(idx===items.length){
+document.getElementById("matSort").innerHTML='<div style="text-align:center;font-size:23px">🎉 ¡Clasificaste todos los materiales!</div>';
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goMat3;document.getElementById("activityNext").classList.remove("hidden");
+}else setTimeout(show,350);
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Probá nuevamente. ¿Se puede apretar o doblar fácilmente?</div>';
+}
+show();
+}
+
+function goMat3(){
+document.getElementById("activityBar").style.width="60%";
+document.querySelector("#activity .small").textContent="🧱 MATERIALES · DESAFÍO 3 DE 5";
+document.querySelector("#activity h2").textContent="🧠 Memoria de materiales";
+document.getElementById("activityQuestion").innerHTML="Encontrá las <b>parejas</b>: cada objeto debe unirse con el material del que está hecho.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Tocá dos tarjetas para descubrirlas. Recordá dónde viste cada una.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+
+const cards=[
+["🥄","METAL","metal"],["🪨","METAL","metal"],
+["🪑","MADERA","madera"],["🌳","MADERA","madera"],
+["👕","TELA","tela"],["🧸","TELA","tela"],
+["🪟","VIDRIO","vidrio"],["🥛","VIDRIO","vidrio"]
+];
+cards.sort(()=>Math.random()-0.5);
+let open=[],matched=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="memoryGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:650px;margin:auto"></div>';
+const mg=document.getElementById("memoryGrid");
+cards.forEach((c,n)=>{
+const b=document.createElement("button");
+b.dataset.key=c[2];
+b.dataset.open="0";
+b.style.cssText="height:115px;border:3px solid #d9def0;border-radius:16px;background:#7657d9;color:white;font-size:34px;cursor:pointer";
+b.textContent="❓";
+b.onclick=()=>{
+if(b.dataset.open==="1"||open.length===2)return;
+b.dataset.open="1";b.textContent=`${c[0]}\n${c[1]}`;open.push(b);
+if(open.length===2){
+if(open[0].dataset.key===open[1].dataset.key){
+open.forEach(x=>{x.disabled=true;x.style.background="#8ee6a1";x.style.color="#234";});
+matched++;open=[];
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Pareja encontrada!</div>';
+if(matched===4){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente memoria! Encontraste las 4 parejas. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goMat4;document.getElementById("activityNext").classList.remove("hidden");
+}
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 No forman pareja. Mirá bien y probá de nuevo.</div>';
+setTimeout(()=>{open.forEach(x=>{x.dataset.open="0";x.textContent="❓";});open=[];},700);
+}
+}
+};
+mg.appendChild(b);
+});
+}
+
+function goMat4(){
+document.getElementById("activityBar").style.width="80%";
+document.querySelector("#activity .small").textContent="🧱 MATERIALES · DESAFÍO 4 DE 5";
+document.querySelector("#activity h2").textContent="🏗️ ¿Qué material elegirías?";
+document.getElementById("activityQuestion").innerHTML="Elegí el material más adecuado para cada situación. <b>Hay que pensar en sus propiedades.</b>";
+document.getElementById("activityNext").classList.add("hidden");
+const qs=[
+["Queremos hacer una ventana para poder mirar a través de ella.","🪟","Vidrio",["Vidrio","Lana","Ladrillo"]],
+["Queremos hacer una bufanda que sea suave y se pueda doblar.","🧣","Lana",["Ladrillo","Lana","Metal"]],
+["Queremos construir una pared resistente.","🧱","Ladrillo",["Tela","Ladrillo","Esponja"]]
+];
+let q=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="choiceSituation" style="max-width:720px;margin:auto"></div><div id="choiceStatus" style="text-align:center;font-weight:bold;margin:12px"></div>';
+function showQ(){
+const x=qs[q];
+document.getElementById("choiceSituation").innerHTML=`<div style="text-align:center;background:white;border:3px solid #d9def0;border-radius:18px;padding:24px">
+<div style="font-size:68px">${x[1]}</div><h3>${x[0]}</h3><div id="choices"></div></div>`;
+document.getElementById("choiceStatus").textContent=`Situación ${q+1} de ${qs.length}`;
+x[3].sort(()=>Math.random()-0.5).forEach(v=>{
+const b=document.createElement("button");b.className="toolCard";b.textContent=v;
+b.onclick=()=>{
+if(v===x[2]){
+b.classList.add("correct");document.querySelectorAll("#choices button").forEach(z=>z.disabled=true);
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Muy buena elección! Pensaste en la propiedad del material.</div>';
+q++;
+if(q===qs.length){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Elegiste materiales adecuados en todas las situaciones. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goMat5;document.getElementById("activityNext").classList.remove("hidden");
+}else setTimeout(showQ,400);
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Pensá qué propiedad necesitamos: ¿debe ser transparente, suave, flexible o resistente?</div>';
+}
+};document.getElementById("choices").appendChild(b);
+});
+}
+showQ();
+}
+
+function goMat5(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🧱 MATERIALES · DESAFÍO 5 DE 5";
+document.querySelector("#activity h2").textContent="✏️ Mi material favorito";
+document.getElementById("activityQuestion").innerHTML="Elegí un material y escribí una característica que tenga. <b>Podés escribir una palabra o una frase corta.</b>";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Ejemplos: duro, blando, transparente, resistente, suave.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const box=document.getElementById("activityTools");
+box.innerHTML=`<div style="max-width:700px;margin:auto;background:white;border:3px solid #d9def0;border-radius:18px;padding:24px;text-align:center">
+<div id="materialChoices" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"></div>
+<input id="matWritten" type="text" placeholder="Escribí una característica..." style="width:90%;max-width:500px;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px;margin-top:18px">
+<br><br><button id="matCheck" class="primary">Comprobar</button></div>`;
+const mats=[
+["🪨","Piedra",["duro","resistente"]],["🧸","Tela",["blando","suave","flexible"]],
+["🪟","Vidrio",["transparente","duro"]],["🧱","Ladrillo",["duro","resistente"]]
+];
+let chosen=null;
+mats.forEach(m=>{
+const b=document.createElement("button");b.className="toolCard";b.innerHTML=`${m[0]} ${m[1]}`;
+b.onclick=()=>{chosen=m;document.querySelectorAll("#materialChoices button").forEach(x=>x.style.outline="none");b.style.outline="5px solid #ff70ad";};
+document.getElementById("materialChoices").appendChild(b);
+});
+document.getElementById("matCheck").onclick=()=>{
+if(!chosen){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">👆 Primero elegí un material.</div>';return;}
+const ans=document.getElementById("matWritten").value.trim().toLowerCase();
+if(chosen[2].some(x=>ans.includes(x))){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Excelente! Relacionaste el material con una de sus propiedades. ⭐ <b>¡Aventura completada!</b></div>';
+document.getElementById("matWritten").disabled=true;document.getElementById("matCheck").disabled=true;
+document.querySelectorAll("#materialChoices button").forEach(x=>x.disabled=true);
+document.getElementById("activityNext").textContent="🎉 Terminar aventura";
+document.getElementById("activityNext").onclick=finishMateriales;
+document.getElementById("activityNext").classList.remove("hidden");
+}else{
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Pensá en una característica de ese material. Mirá los ejemplos y volvé a intentar.</div>';
+}
+};
+}
+
+function finishMateriales(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";
+document.querySelector("#activity h2").textContent="🧱 ¡Materiales!";
+document.getElementById("activityQuestion").innerHTML="";
+document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones!<br><br>Completaste los 5 desafíos de <b>Materiales</b>. 🌟<br><br>⭐ ¡Misión cumplida!</div>';
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+}
+
+
+function startMaquinas(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="⚙️ MÁQUINAS QUE AYUDAN · DESAFÍO 1 DE 5";
+document.querySelector("#activity h2").textContent="🔊 ¿Qué máquina es?";
+document.getElementById("activityQuestion").innerHTML="Escuchá la pista imaginaria y descubrí qué máquina puede ayudarnos con esa tarea.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pista: soy una máquina que usamos para lavar la ropa. ¿Cuál soy?</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const opts=[["🧺","Lavarropas",true],["📺","Televisor",false],["🧊","Heladera",false],["💡","Lámpara",false]];
+const box=document.getElementById("activityTools");box.innerHTML="";
+opts.forEach(o=>{
+const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${o[0]}</span>${o[1]}`;
+b.onclick=()=>{
+if(o[2]){
+b.classList.add("correct");document.querySelectorAll("#activityTools .toolCard").forEach(x=>x.disabled=true);
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Correcto! El lavarropas ayuda a lavar la ropa. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goMaq2;document.getElementById("activityNext").classList.remove("hidden");
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Esa máquina realiza otra tarea. Volvé a pensar en la pista.</div>';
+};box.appendChild(b);
+});
+}
+
+function goMaq2(){
+document.getElementById("activityBar").style.width="40%";
+document.querySelector("#activity .small").textContent="⚙️ MÁQUINAS QUE AYUDAN · DESAFÍO 2 DE 5";
+document.querySelector("#activity h2").textContent="🎯 ¿Qué tarea ayuda a realizar?";
+document.getElementById("activityQuestion").innerHTML="Elegí una máquina y después elegí la tarea que ayuda a realizar. <b>Las opciones están mezcladas.</b>";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá qué trabajo nos facilita cada máquina.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const machines=[["🧺","Lavarropas","lavar"],["🧊","Heladera","conservar"],["🧹","Aspiradora","limpiar"],["🍞","Tostadora","tostar"]];
+const tasks=[["🧽","Ayuda a limpiar el piso.","limpiar"],["🥶","Ayuda a conservar los alimentos.","conservar"],["🍞","Ayuda a tostar el pan.","tostar"],["👕","Ayuda a lavar la ropa.","lavar"]];
+let selected=null,matched=0;
+const box=document.getElementById("activityTools");
+box.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:850px;margin:auto"><div><h3 style="background:#e8f2ff;padding:12px;border-radius:14px">⚙️ MÁQUINAS</h3><div id="maqLeft"></div></div><div><h3 style="background:#fff0c9;padding:12px;border-radius:14px">🎯 TAREAS</h3><div id="maqRight"></div></div></div>`;
+machines.forEach(m=>{
+const b=document.createElement("button");b.className="toolCard";b.dataset.match=m[2];b.innerHTML=`<span class="toolEmoji">${m[0]}</span>${m[1]}`;
+b.onclick=()=>{if(!b.disabled){document.querySelectorAll("#maqLeft .toolCard").forEach(x=>x.style.outline="none");b.style.outline="5px solid #ff70ad";selected=b;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">👆 Ahora buscá la tarea correspondiente.</div>';}};
+document.getElementById("maqLeft").appendChild(b);
+});
+tasks.forEach(t=>{
+const b=document.createElement("button");b.className="toolCard";b.dataset.match=t[2];b.innerHTML=`<span class="toolEmoji">${t[0]}</span>${t[1]}`;
+b.onclick=()=>{
+if(!selected||b.disabled)return;
+if(selected.dataset.match===b.dataset.match){
+selected.classList.add("correct");b.classList.add("correct");selected.disabled=true;b.disabled=true;selected.style.outline="none";selected=null;matched++;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Muy bien! Encontraste la relación.</div>';
+if(matched===4){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Relacionaste las 4 máquinas con sus tareas. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goMaq3;document.getElementById("activityNext").classList.remove("hidden");}
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Esa tarea no corresponde a esa máquina. Pensá qué trabajo facilita.</div>';
+};document.getElementById("maqRight").appendChild(b);
+});
+}
+
+function goMaq3(){
+document.getElementById("activityBar").style.width="60%";
+document.querySelector("#activity .small").textContent="⚙️ MÁQUINAS QUE AYUDAN · DESAFÍO 3 DE 5";
+document.querySelector("#activity h2").textContent="🛠️ ¿Antes o después?";
+document.getElementById("activityQuestion").innerHTML="Pensá en cómo una máquina cambia una tarea. Elegí qué hacemos <b>antes</b> y qué hacemos <b>después</b>.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Por ejemplo: antes de usar una aspiradora, primero debemos preparar el lugar.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const qs=[
+["🧹 Aspiradora","Antes de usarla, primero debemos…","recoger objetos del piso",["recoger objetos del piso","guardar la aspiradora","mirar televisión"]],
+["🧺 Lavarropas","Después de que termina, podemos…","sacar la ropa",["sacar la ropa","poner más jabón sin abrir","meter otra ropa mojada"]]
+];
+let q=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="beforeAfter" style="max-width:720px;margin:auto"></div>';
+function show(){
+const x=qs[q];
+document.getElementById("beforeAfter").innerHTML=`<div style="text-align:center;background:white;border:3px solid #d9def0;border-radius:18px;padding:25px"><div style="font-size:70px">${x[0]}</div><h3>${x[1]}</h3><div id="baOptions"></div></div>`;
+x[3].sort(()=>Math.random()-0.5).forEach(v=>{const b=document.createElement("button");b.className="toolCard";b.textContent=v;b.onclick=()=>{if(v===x[2]){b.classList.add("correct");document.querySelectorAll("#baOptions button").forEach(z=>z.disabled=true);document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Correcto! Pensaste en el momento adecuado.</div>';q++;if(q===qs.length){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente! Entendiste cómo organizar una tarea con una máquina. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goMaq4;document.getElementById("activityNext").classList.remove("hidden");}else setTimeout(show,400);}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Pensá qué acción tiene sentido en ese momento.</div>';};document.getElementById("baOptions").appendChild(b);});
+}
+show();
+}
+
+function goMaq4(){
+document.getElementById("activityBar").style.width="80%";
+document.querySelector("#activity .small").textContent="⚙️ MÁQUINAS QUE AYUDAN · DESAFÍO 4 DE 5";
+document.querySelector("#activity h2").textContent="🔧 Armamos una máquina imaginaria";
+document.getElementById("activityQuestion").innerHTML="Elegí una máquina, una tarea que realiza y una fuente de energía. Después descubrí si tu combinación tiene sentido.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá: las máquinas necesitan energía y tienen una función.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const box=document.getElementById("activityTools");
+box.innerHTML=`<div style="max-width:760px;margin:auto;background:white;border:3px solid #d9def0;border-radius:18px;padding:24px"><h3>1️⃣ Máquina</h3><div id="m1"></div><h3>2️⃣ Tarea</h3><div id="m2"></div><h3>3️⃣ Energía</h3><div id="m3"></div></div>`;
+const groups=[
+[["🧺","Lavarropas","lavar"],["🧊","Heladera","conservar"],["💡","Lámpara","iluminar"]],
+[["👕","Lavar ropa","lavar"],["🥕","Conservar alimentos","conservar"],["🌟","Iluminar","iluminar"]],
+[["⚡","Electricidad","electricidad"],["☀️","Sol","sol"]]
+];
+let sel=[null,null,null];
+groups.forEach((g,gi)=>{
+g.forEach(x=>{
+const b=document.createElement("button");b.className="toolCard";b.innerHTML=`${x[0]} ${x[1]}`;b.dataset.match=x[2];b.onclick=()=>{sel[gi]=b;document.querySelectorAll("#m"+(gi+1)+" .toolCard").forEach(z=>z.style.outline="none");b.style.outline="5px solid #ff70ad";check();};document.getElementById("m"+(gi+1)).appendChild(b);
+});
+});
+function check(){
+if(!sel.every(Boolean))return;
+if(sel[0].dataset.match===sel[1].dataset.match && (sel[2].dataset.match==="electricidad"||sel[2].dataset.match==="sol")){
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Tu combinación tiene sentido! La máquina realiza esa tarea y puede funcionar con esa energía. ⭐ <b>+10 puntos</b></div>';
+document.getElementById("activityNext").onclick=goMaq5;document.getElementById("activityNext").classList.remove("hidden");
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Probá otra combinación. Pensá qué tarea realiza la máquina y qué energía necesita.</div>';
+}
+}
+
+function goMaq5(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="⚙️ MÁQUINAS QUE AYUDAN · DESAFÍO 5 DE 5";
+document.querySelector("#activity h2").textContent="✏️ Mi máquina y su ayuda";
+document.getElementById("activityQuestion").innerHTML="Imaginá una máquina que te ayude en casa. Escribí <b>qué tarea realiza</b> y <b>cómo ayuda</b>.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Ejemplo: “Una máquina que ordena los juguetes y me ayuda a mantener mi habitación ordenada”. ¡Inventá la tuya!</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const box=document.getElementById("activityTools");
+box.innerHTML=`<div style="max-width:700px;margin:auto;background:white;border:3px solid #d9def0;border-radius:18px;padding:24px;text-align:center">
+<div style="font-size:60px">🤖⚙️</div>
+<textarea id="maqIdea" rows="5" placeholder="Mi máquina sirve para..." style="width:90%;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px"></textarea>
+<br><br><button id="maqCheck" class="primary">Presentar mi idea</button></div>`;
+document.getElementById("maqCheck").onclick=()=>{
+const ans=document.getElementById("maqIdea").value.trim();
+if(ans.length>=15){
+document.getElementById("maqIdea").disabled=true;document.getElementById("maqCheck").disabled=true;
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Qué buena idea! Explicaste cómo una máquina podría ayudar. ⭐ <b>¡Aventura completada!</b></div>';
+document.getElementById("activityNext").textContent="🎉 Terminar aventura";document.getElementById("activityNext").onclick=finishMaquinas;document.getElementById("activityNext").classList.remove("hidden");
+}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Escribí un poquito más: contanos qué tarea realiza tu máquina y cómo ayuda.</div>';
+};
+}
+
+function finishMaquinas(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";
+document.querySelector("#activity h2").textContent="⚙️ ¡Máquinas que ayudan!";
+document.getElementById("activityQuestion").innerHTML="";
+document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones!<br><br>Completaste los 5 desafíos de <b>Máquinas que ayudan</b>. 🌟<br><br>⭐ ¡Misión cumplida!</div>';
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+}
+
+
+function startAmbiente(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="♻️ GUARDIANES DEL AMBIENTE · DESAFÍO 1 DE 5";
+document.querySelector("#activity h2").textContent="🔎 Detectives del cuidado";
+document.getElementById("activityQuestion").innerHTML="Mirá cada situación y elegí cuál ayuda a cuidar el ambiente.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌎 Recordá: podemos usar la tecnología de manera responsable para cuidar nuestro entorno.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const situations=[
+["💡","Una habitación queda vacía. ¿Qué hacemos con la luz?",["Apagarla cuando no la necesitamos","Dejarla encendida todo el día","Encender más luces"],0],
+["🚰","Mientras nos cepillamos los dientes, ¿qué hacemos con la canilla?",["Dejarla abierta","Cerrar la canilla","Abrir otra canilla"],1],
+["📱","Tenemos un aparato que ya no usamos. ¿Qué opción es mejor?",["Tirarlo en cualquier lugar","Dejarlo en la calle","Llevarlo a un punto de reciclaje o recolección"],2]
+];
+let q=0;
+const box=document.getElementById("activityTools");
+box.innerHTML='<div id="amb1" style="max-width:760px;margin:auto"></div>';
+function show(){
+const x=situations[q];
+document.getElementById("amb1").innerHTML=`<div style="text-align:center;background:white;border:3px solid #d9def0;border-radius:18px;padding:25px"><div style="font-size:70px">${x[0]}</div><h3>${x[1]}</h3><div id="amb1opts"></div></div>`;
+x[2].forEach((v,i)=>{const b=document.createElement("button");b.className="toolCard";b.textContent=v;b.onclick=()=>{if(i===x[3]){b.classList.add("correct");document.querySelectorAll("#amb1opts button").forEach(z=>z.disabled=true);q++;if(q===situations.length){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Excelente! Reconociste tres buenas decisiones para cuidar el ambiente. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goAmb2;document.getElementById("activityNext").classList.remove("hidden");}else{document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Muy bien! Esa decisión ayuda a cuidar el ambiente.</div>';setTimeout(show,350);}}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Pensá si esa acción ahorra recursos o genera menos residuos.</div>';};document.getElementById("amb1opts").appendChild(b);});
+}
+show();
+}
+
+function goAmb2(){
+document.getElementById("activityBar").style.width="40%";
+document.querySelector("#activity .small").textContent="♻️ GUARDIANES DEL AMBIENTE · DESAFÍO 2 DE 5";
+document.querySelector("#activity h2").textContent="🗑️ ¿Dónde lo colocamos?";
+document.getElementById("activityQuestion").innerHTML="Clasificá cada residuo en el lugar que corresponde. Arrastrar no hace falta: hacé clic en el residuo y después en su destino.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá de qué material está hecho cada objeto.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const items=[
+["🍎","Cáscara de manzana","Orgánicos"],["🥫","Lata","Reciclables"],["🧴","Botella de plástico","Reciclables"],["🍂","Hojas secas","Orgánicos"]
+];
+const dest=["Orgánicos","Reciclables"];
+let selected=null,matched=0;
+const box=document.getElementById("activityTools");
+box.innerHTML=`<div style="max-width:850px;margin:auto"><div style="display:grid;grid-template-columns:1fr 1fr;gap:22px"><div><h3 style="background:#e8f2ff;padding:12px;border-radius:14px">♻️ RESIDUOS</h3><div id="amb2items"></div></div><div><h3 style="background:#fff0c9;padding:12px;border-radius:14px">📦 DESTINOS</h3><div id="amb2dest"></div></div></div></div>`;
+items.forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${x[0]}</span>${x[1]}`;b.dataset.match=x[2];b.onclick=()=>{if(!b.disabled){document.querySelectorAll("#amb2items .toolCard").forEach(z=>z.style.outline="none");b.style.outline="5px solid #ff70ad";selected=b;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">👆 Ahora elegí su destino.</div>';}};document.getElementById("amb2items").appendChild(b);});
+dest.forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.textContent=x;b.dataset.match=x;b.onclick=()=>{if(!selected)return;if(selected.dataset.match===b.dataset.match){selected.classList.add("correct");selected.disabled=true;selected.style.outline="none";matched++;selected=null;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Correcto! Ese residuo va allí.</div>';if(matched===items.length){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente clasificación! ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goAmb3;document.getElementById("activityNext").classList.remove("hidden");}}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Mirá de qué material está hecho y volvé a intentar.</div>';};document.getElementById("amb2dest").appendChild(b);});
+}
+
+function goAmb3(){
+document.getElementById("activityBar").style.width="60%";
+document.querySelector("#activity .small").textContent="♻️ GUARDIANES DEL AMBIENTE · DESAFÍO 3 DE 5";
+document.querySelector("#activity h2").textContent="🌱 ¿Qué cambiarías?";
+document.getElementById("activityQuestion").innerHTML="Elegí la mejor solución para cada problema ambiental de todos los días.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Una buena solución usa los recursos con responsabilidad.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const qs=[
+["💡 Hay una computadora encendida pero nadie la está usando.",["Apagarla o ponerla en suspensión","Dejarla encendida siempre","Encender otra computadora"],0],
+["🥤 En la escuela se usan muchas botellas descartables.",["Usar botellas reutilizables","Usar dos botellas por persona","Tirar las botellas al piso"],0],
+["🛍️ Vamos a comprar algo y necesitamos llevarlo.",["Usar una bolsa reutilizable","Pedir varias bolsas aunque no hagan falta","Usar una bolsa nueva cada vez"],0]
+];
+let q=0;const box=document.getElementById("activityTools");box.innerHTML='<div id="amb3" style="max-width:760px;margin:auto"></div>';
+function show(){const x=qs[q];document.getElementById("amb3").innerHTML=`<div style="background:white;border:3px solid #d9def0;border-radius:18px;padding:25px;text-align:center"><div style="font-size:60px">${x[0].slice(0,2)}</div><h3>${x[0].slice(2)}</h3><div id="amb3opts"></div></div>`;x[1].forEach((v,i)=>{const b=document.createElement("button");b.className="toolCard";b.textContent=v;b.onclick=()=>{if(i===x[2]){b.classList.add("correct");document.querySelectorAll("#amb3opts button").forEach(z=>z.disabled=true);q++;if(q===qs.length){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌎 ¡Muy bien! Encontraste soluciones que reducen el consumo y los residuos. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goAmb4;document.getElementById("activityNext").classList.remove("hidden");}else{document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Buena elección!</div>';setTimeout(show,350);}}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Pensá cuál opción cuida mejor los recursos.</div>';};document.getElementById("amb3opts").appendChild(b);});}
+show();
+}
+
+function goAmb4(){
+document.getElementById("activityBar").style.width="80%";
+document.querySelector("#activity .small").textContent="♻️ GUARDIANES DEL AMBIENTE · DESAFÍO 4 DE 5";
+document.querySelector("#activity h2").textContent="🧩 Armá la misión ecológica";
+document.getElementById("activityQuestion").innerHTML="Ordená las acciones para realizar una pequeña misión de cuidado del ambiente.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Primero observamos el problema, después actuamos y finalmente revisamos.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const steps=["🔎 Observar qué residuos hay","🗂️ Separarlos según corresponda","♻️ Llevar los reciclables al lugar de recolección","🌎 Revisar que el espacio quede limpio"];
+let order=[],available=[...steps];const box=document.getElementById("activityTools");box.innerHTML='<div style="max-width:760px;margin:auto"><div id="amb4choices"></div><h3>Tu orden:</h3><div id="amb4order" class="feedbackBox">Todavía no elegiste acciones.</div></div>';
+function render(){const c=document.getElementById("amb4choices");c.innerHTML="";available.forEach((x,i)=>{const b=document.createElement("button");b.className="toolCard";b.textContent=x;b.onclick=()=>{order.push(x);available.splice(i,1);render();document.getElementById("amb4order").innerHTML=order.map((v,j)=>(j+1)+". "+v).join("<br>")||"Todavía no elegiste acciones.";if(order.length===steps.length){if(order.every((v,i)=>v===steps[i])){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Orden perfecto! Organizaste una misión ecológica paso a paso. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goAmb5;document.getElementById("activityNext").classList.remove("hidden");}else{document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 El orden no es el mejor. Volvé a intentarlo.</div>';document.getElementById("activityNext").textContent="🔄 Intentar de nuevo";document.getElementById("activityNext").onclick=()=>{order=[];available=[...steps];document.getElementById("activityNext").classList.add("hidden");document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá: observar → separar → llevar → revisar.</div>';render();document.getElementById("amb4order").textContent="Todavía no elegiste acciones.";};document.getElementById("activityNext").classList.remove("hidden");}}};c.appendChild(b);});}
+render();
+}
+
+function goAmb5(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="♻️ GUARDIANES DEL AMBIENTE · DESAFÍO 5 DE 5";
+document.querySelector("#activity h2").textContent="💚 Mi compromiso tecnológico";
+document.getElementById("activityQuestion").innerHTML="Escribí un compromiso que puedas cumplir para usar la tecnología cuidando el ambiente.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Podés hablar de ahorrar energía, cuidar el agua, reutilizar materiales o separar residuos.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const box=document.getElementById("activityTools");box.innerHTML=`<div style="max-width:700px;margin:auto;background:white;border:3px solid #d9def0;border-radius:18px;padding:24px;text-align:center"><div style="font-size:65px">🌎💚</div><textarea id="ambIdea" rows="5" placeholder="Mi compromiso es..." style="width:90%;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px"></textarea><br><br><button id="ambCheck" class="primary">Presentar mi compromiso</button></div>`;
+document.getElementById("ambCheck").onclick=()=>{const ans=document.getElementById("ambIdea").value.trim();if(ans.length>=15){document.getElementById("ambIdea").disabled=true;document.getElementById("ambCheck").disabled=true;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💚 ¡Excelente compromiso! Cada pequeña acción ayuda a cuidar nuestro planeta. ⭐ <b>¡Aventura completada!</b></div>';document.getElementById("activityNext").textContent="🎉 Terminar aventura";document.getElementById("activityNext").onclick=finishAmbiente;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Escribí un compromiso un poquito más completo.</div>';};
+}
+
+function finishAmbiente(){
+document.getElementById("activityBar").style.width="100%";
+document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";
+document.querySelector("#activity h2").textContent="♻️ ¡Guardianes del ambiente!";
+document.getElementById("activityQuestion").innerHTML="";
+document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones!<br><br>Completaste los 5 desafíos de <b>Guardianes del ambiente</b>. 🌎💚<br><br>⭐ ¡Misión cumplida!</div>';
+document.getElementById("activityFeedback").innerHTML="";
+document.getElementById("activityNext").classList.add("hidden");
+}
+
+
+function startInventores(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="💡 PEQUEÑOS INVENTORES · DESAFÍO 1 DE 5";
+document.querySelector("#activity h2").textContent="🕵️ El museo del futuro";
+document.getElementById("activityQuestion").innerHTML="Entraste a un museo del futuro. Descubrí cuál de estos inventos podría ayudar a una persona que tiene las manos ocupadas y necesita llevar varios objetos.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🔎 Pista: pensá en un invento que pueda transportar objetos sin tener que llevarlos en las manos.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const opts=[["🛒","Carrito con ruedas",true],["🎩","Sombrero con luces",false],["🪥","Cepillo gigante",false],["🪁","Cometa voladora",false]];const box=document.getElementById("activityTools");box.innerHTML="";opts.forEach(o=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${o[0]}</span>${o[1]}`;b.onclick=()=>{if(o[2]){b.classList.add("correct");document.querySelectorAll("#activityTools button").forEach(z=>z.disabled=true);document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Lo descubriste! El carrito puede transportar objetos y deja las manos libres. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").textContent="➡️ Siguiente desafío";document.getElementById("activityNext").onclick=goInv2;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Ese invento puede ser divertido, pero no resuelve el problema. ¡Probá otra vez!</div>';};box.appendChild(b);});
+}
+function goInv2(){
+document.getElementById("activityBar").style.width="40%";document.querySelector("#activity .small").textContent="💡 PEQUEÑOS INVENTORES · DESAFÍO 2 DE 5";document.querySelector("#activity h2").textContent="🩺 Radiografía de un invento";document.getElementById("activityQuestion").innerHTML="Tenemos un <b>robot regador</b>. Tocá cada parte y descubrí para qué sirve. Luego elegí la combinación correcta.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤖 Cada parte de un invento tiene una función.</div>';document.getElementById("activityNext").classList.add("hidden");
+const parts=[["💧","Tanque","Guarda el agua"],["🛞","Ruedas","Permiten desplazarse"],["📡","Sensor","Detecta si la tierra está seca"]];const box=document.getElementById("activityTools");box.innerHTML='<div id="parts" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"></div><div id="partInfo" class="feedbackBox" style="margin-top:15px">👆 Tocá una parte para conocerla.</div><div id="partChoices" style="margin-top:15px"></div>';const p=document.getElementById("parts"),info=document.getElementById("partInfo");parts.forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${x[0]}</span>${x[1]}`;b.onclick=()=>info.innerHTML=`🔍 <b>${x[1]}</b>: ${x[2]}.`;p.appendChild(b);});[["Tanque + ruedas + sensor",true],["Sombrero + cuchara + globo",false],["Libro + lápiz + pelota",false]].forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.textContent=x[0];b.onclick=()=>{if(x[1]){document.querySelectorAll("#partChoices button").forEach(z=>z.disabled=true);document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 ¡Excelente! Reconociste las partes que hacen posible el invento. <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goInv3;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Esas piezas no forman un robot regador. Mirá las funciones.</div>';};document.getElementById("partChoices").appendChild(b);});
+}
+function goInv3(){
+document.getElementById("activityBar").style.width="60%";document.querySelector("#activity .small").textContent="💡 PEQUEÑOS INVENTORES · DESAFÍO 3 DE 5";document.querySelector("#activity h2").textContent="🔧 ¡Arreglá el invento!";document.getElementById("activityQuestion").innerHTML="Un invento se rompió. Leé las tres fallas y elegí qué cambio harías para que vuelva a funcionar.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🛠️ Un inventor no se rinde: observa, encuentra la falla y prueba una mejora.</div>';document.getElementById("activityNext").classList.add("hidden");
+const cases=[["🚲 Bicicleta sin ruedas","¿Qué cambiarías?",["Agregar dos ruedas","Agregar una almohada","Agregar una ventana"]],["💡 Lámpara sin energía","¿Qué necesita?",["Una fuente de energía","Un juguete","Una cuchara"]],["🪣 Balde con un agujero","¿Cómo mejorarlo?",["Tapar el agujero","Ponerle una cinta para decorar","Agregarle una pelota"]]];let q=0;const box=document.getElementById("activityTools");box.innerHTML='<div id="fixCase"></div>';function show(){const x=cases[q];document.getElementById("fixCase").innerHTML=`<div style="background:white;border:3px solid #d9def0;border-radius:18px;padding:22px;text-align:center"><div style="font-size:65px">${x[0]}</div><h3>${x[1]}</h3><div id="fixOpts"></div></div>`;x[2].forEach((t,i)=>{const b=document.createElement("button");b.className="toolCard";b.textContent=t;b.onclick=()=>{if(i===0){b.classList.add("correct");document.querySelectorAll("#fixOpts button").forEach(z=>z.disabled=true);q++;if(q===cases.length){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Inventor experto! Reparaste los tres inventos. <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goInv4;document.getElementById("activityNext").classList.remove("hidden");}else{document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Reparación correcta! Vamos con la siguiente falla.</div>';setTimeout(show,500);}}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Esa modificación no soluciona la falla. Pensá qué necesita el invento para cumplir su función.</div>';};document.getElementById("fixOpts").appendChild(b);});}show();
+}
+function goInv4(){
+document.getElementById("activityBar").style.width="80%";document.querySelector("#activity .small").textContent="💡 PEQUEÑOS INVENTORES · DESAFÍO 4 DE 5";document.querySelector("#activity h2").textContent="🔐 El código secreto";document.getElementById("activityQuestion").innerHTML="Descifrá el código: <b>🛞 + 🛞 + 📦 + 🪢</b>. ¿Qué invento podemos construir con esas pistas?";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🧩 Pensá qué objeto puede tener ruedas, una caja y algo para agarrarlo.</div>';document.getElementById("activityNext").classList.add("hidden");const opts=[["🛒","Un carrito para transportar cosas",true],["🎈","Un globo para decorar",false],["🪥","Un cepillo de dientes",false],["☂️","Un paraguas",false]];const box=document.getElementById("activityTools");box.innerHTML="";opts.forEach(o=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${o[0]}</span>${o[1]}`;b.onclick=()=>{if(o[2]){document.querySelectorAll("#activityTools button").forEach(z=>z.disabled=true);document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Código resuelto! Las pistas forman un carrito. <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goInv5;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🔐 Esa respuesta no coincide con las pistas. ¡Volvé a descifrar!</div>';};box.appendChild(b);});
+}
+function goInv5(){
+document.getElementById("activityBar").style.width="100%";document.querySelector("#activity .small").textContent="💡 PEQUEÑOS INVENTORES · DESAFÍO 5 DE 5";document.querySelector("#activity h2").textContent="🎨 Diseñá tu invento";document.getElementById("activityQuestion").innerHTML="Ahora sos el inventor. Dibujá tu invento y completá su ficha: <b>nombre, problema que resuelve, cómo funciona y materiales</b>.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🌟 No hay una única respuesta. ¡Tu imaginación es parte del desafío!</div>';document.getElementById("activityNext").classList.add("hidden");const box=document.getElementById("activityTools");box.innerHTML='<div style="max-width:800px;margin:auto;background:white;border:3px solid #d9def0;border-radius:18px;padding:20px;text-align:center"><canvas id="invCanvas" width="700" height="300" style="max-width:100%;border:3px dashed #bfc7df;border-radius:14px;background:#fffdf5;touch-action:none"></canvas><p><button id="clearInv" class="secondary">🧹 Borrar dibujo</button></p><textarea id="invFicha" rows="6" placeholder="Nombre del invento: ...\nProblema que resuelve: ...\nCómo funciona: ...\nMateriales: ..." style="width:90%;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px"></textarea><br><br><button id="invPresent" class="primary">🚀 Presentar mi invento</button></div>';const canvas=document.getElementById("invCanvas"),ctx=canvas.getContext("2d");ctx.lineWidth=4;ctx.lineCap="round";let drawing=false;function pos(e){const r=canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*canvas.width/r.width,y:(t.clientY-r.top)*canvas.height/r.height};}canvas.onmousedown=e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};canvas.onmousemove=e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()};canvas.onmouseup=()=>drawing=false;canvas.onmouseleave=()=>drawing=false;canvas.ontouchstart=e=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};canvas.ontouchmove=e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()};canvas.ontouchend=()=>drawing=false;document.getElementById("clearInv").onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById("invPresent").onclick=()=>{const a=document.getElementById("invFicha").value.trim();if(a.length>=45){document.getElementById("invFicha").disabled=true;document.getElementById("invPresent").disabled=true;document.getElementById("clearInv").disabled=true;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Invento presentado! Usaste tu imaginación para crear, explicar y comunicar una idea. ⭐ <b>¡Aventura completada!</b></div>';document.getElementById("activityNext").textContent="🎉 Terminar aventura";document.getElementById("activityNext").onclick=finishInventores;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Completá la ficha con un poco más de información para presentar tu invento.</div>';};
+}
+function finishInventores(){document.getElementById("activityBar").style.width="100%";document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";document.querySelector("#activity h2").textContent="💡 ¡Pequeños inventores!";document.getElementById("activityQuestion").innerHTML="";document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones!<br><br>Completaste los 5 desafíos de <b>Pequeños inventores</b>. 💡🌟<br><br>⭐ ¡Misión cumplida!</div>';document.getElementById("activityFeedback").innerHTML="";document.getElementById("activityNext").classList.add("hidden");}
+
+
+function startSegura(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+document.getElementById("activityBar").style.width="20%";
+document.querySelector("#activity .small").textContent="🔐 TECNOLOGÍA SEGURA · DESAFÍO 1 DE 5";
+document.querySelector("#activity h2").textContent="🚦 Semáforo digital";
+document.getElementById("activityQuestion").innerHTML="En cada situación, elegí el color que corresponde: 🟢 <b>seguro</b>, 🟡 <b>pregunto a un adulto</b> o 🔴 <b>no lo hago</b>.";
+document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💡 Pensá antes de hacer clic, compartir o responder.</div>';
+document.getElementById("activityNext").classList.add("hidden");
+const cases=[
+["👨‍👩‍👧","Le muestro a un adulto un mensaje que me parece extraño.",1],
+["🎮","Un juego me pide mi nombre completo, dirección y teléfono.",2],
+["🔒","Cierro sesión cuando termino de usar una cuenta en una computadora compartida.",0],
+["💬","Una persona desconocida me pide una foto y dice que es un secreto.",2]
+];
+let q=0;const box=document.getElementById("activityTools");box.innerHTML='<div id="safeLight"></div>';
+function show(){const x=cases[q];document.getElementById("safeLight").innerHTML=`<div style="background:white;border:3px solid #d9def0;border-radius:18px;padding:22px;text-align:center"><div style="font-size:58px">${x[0]}</div><h3>${x[1]}</h3><div id="lightBtns" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"></div></div>`;[["🟢","Seguro"],["🟡","Pregunto a un adulto"],["🔴","No lo hago"]].forEach((v,i)=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${v[0]}</span>${v[1]}`;b.onclick=()=>{if(i===x[2]){b.classList.add("correct");document.querySelectorAll("#lightBtns button").forEach(z=>z.disabled=true);q++;if(q===cases.length){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🚦 ¡Excelente! Supiste detenerte, pedir ayuda y actuar con cuidado. ⭐ <b>+10 puntos</b></div>';document.getElementById("activityNext").textContent="➡️ Siguiente desafío";document.getElementById("activityNext").onclick=goSegura2;document.getElementById("activityNext").classList.remove("hidden");}else{document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🎉 ¡Muy bien! Seguimos con otra situación.</div>';setTimeout(show,350);}}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Pensá: ¿conviene hacerlo, detenerse o pedir ayuda a un adulto?</div>';};document.getElementById("lightBtns").appendChild(b);});}
+show();
+}
+function goSegura2(){
+document.getElementById("activityBar").style.width="40%";document.querySelector("#activity .small").textContent="🔐 TECNOLOGÍA SEGURA · DESAFÍO 2 DE 5";document.querySelector("#activity h2").textContent="🕵️ El detective de datos";document.getElementById("activityQuestion").innerHTML="Hay datos que debemos cuidar. Tocá las tarjetas que contienen <b>información personal</b>.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🔎 Una pista: son datos que pueden ayudar a identificarte o encontrarte.</div>';document.getElementById("activityNext").classList.add("hidden");
+const cards=[["🎨","Color favorito",false],["🏠","Dirección de casa",true],["🐶","Nombre de mi mascota",false],["📱","Número de teléfono",true],["🔑","Contraseña",true],["🍎","Fruta que me gusta",false]];let found=0;const box=document.getElementById("activityTools");box.innerHTML='<div id="dataCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;max-width:760px;margin:auto"></div>';cards.forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${x[0]}</span>${x[1]}`;b.onclick=()=>{if(b.disabled)return;if(x[2]){b.classList.add("correct");b.disabled=true;found++;document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🔐 ¡Dato personal encontrado!</div>';if(found===3){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Excelente detective! Encontraste los 3 datos que debemos proteger. <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goSegura3;document.getElementById("activityNext").classList.remove("hidden");}}else{document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Ese dato no permite identificarte directamente. Buscá los que debemos proteger especialmente.</div>';}};document.getElementById("dataCards").appendChild(b);});
+}
+function goSegura3(){
+document.getElementById("activityBar").style.width="60%";document.querySelector("#activity .small").textContent="🔐 TECNOLOGÍA SEGURA · DESAFÍO 3 DE 5";document.querySelector("#activity h2").textContent="🔑 La fábrica de contraseñas";document.getElementById("activityQuestion").innerHTML="Construí una contraseña <b>más segura</b> usando las piezas. Evitá nombres, fechas o datos fáciles de adivinar.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🧩 Una buena contraseña puede mezclar letras, números y símbolos.</div>';document.getElementById("activityNext").classList.add("hidden");
+const pieces=["Luna","7","#","Sol","3","!","2020","Nadia"];let chosen=[];const box=document.getElementById("activityTools");box.innerHTML='<div id="pwPieces" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"></div><div id="pwBuild" class="feedbackBox" style="margin-top:18px">Tu contraseña: —</div><button id="pwCheck" class="primary">🔍 Comprobar contraseña</button>';const pc=document.getElementById("pwPieces"),build=document.getElementById("pwBuild");pieces.forEach((x,i)=>{const b=document.createElement("button");b.className="toolCard";b.textContent=x;b.onclick=()=>{if(b.disabled)return;chosen.push(x);b.disabled=true;build.textContent="Tu contraseña: "+chosen.join("");};pc.appendChild(b);});document.getElementById("pwCheck").onclick=()=>{const str=chosen.join("");const hasDigit=/\d/.test(str),hasSym=/[^A-Za-z0-9]/.test(str),bad=/2020|Nadia/i.test(str);if(str.length>=5&&hasDigit&&hasSym&&!bad){document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🔐 ¡Muy bien! Creaste una contraseña más difícil de adivinar. ⭐ <b>+10 puntos</b></div>';document.getElementById("pwCheck").disabled=true;document.getElementById("activityNext").onclick=goSegura4;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">💭 Probá otra combinación: necesitás un número, un símbolo y evitar datos personales o fechas fáciles.</div>';};
+}
+function goSegura4(){
+document.getElementById("activityBar").style.width="80%";document.querySelector("#activity .small").textContent="🔐 TECNOLOGÍA SEGURA · DESAFÍO 4 DE 5";document.querySelector("#activity h2").textContent="💬 ¿Qué harías en este chat?";document.getElementById("activityQuestion").innerHTML="Leé la conversación y elegí la respuesta que mejor te protege.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">📱 Recordá: si algo te incomoda o asusta, no tenés que resolverlo solo.</div>';document.getElementById("activityNext").classList.add("hidden");const box=document.getElementById("activityTools");box.innerHTML='<div style="max-width:700px;margin:auto;background:white;border:3px solid #d9def0;border-radius:18px;padding:22px"><div class="feedbackBox">👤 Desconocido: “Hola. Mandame una foto y no se lo cuentes a nadie.”</div><div id="chatOpts"></div></div>';const opts=[["📸 Le mando la foto porque me lo pidió.",false],["🚫 No respondo, bloqueo o cierro el chat y se lo cuento a un adulto.",true],["🤫 Guardo el secreto para no tener problemas.",false]];opts.forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.textContent=x[0];b.onclick=()=>{if(x[1]){document.querySelectorAll("#chatOpts button").forEach(z=>z.disabled=true);document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🛡️ ¡Excelente! No compartiste una foto, cortaste el contacto y buscaste ayuda de un adulto. <b>+10 puntos</b></div>';document.getElementById("activityNext").onclick=goSegura5;document.getElementById("activityNext").classList.remove("hidden");}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🛑 Esa opción no te protege. Frente a un pedido extraño, cortá el contacto y buscá ayuda.</div>';};document.getElementById("chatOpts").appendChild(b);});
+}
+function goSegura5(){
+document.getElementById("activityBar").style.width="100%";document.querySelector("#activity .small").textContent="🔐 TECNOLOGÍA SEGURA · DESAFÍO 5 DE 5";document.querySelector("#activity h2").textContent="🧭 La ruta segura";document.getElementById("activityQuestion").innerHTML="Elegí las <b>3 estaciones</b> que forman una ruta segura cuando algo en internet te genera dudas.";document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🧭 Pensá qué hacer antes, durante y después de una situación que te preocupa.</div>';document.getElementById("activityNext").classList.add("hidden");const stations=[["⏸️","Me detengo y no hago clic",true],["🗣️","Se lo cuento a un adulto de confianza",true],["🛡️","Bloqueo o cierro si es necesario",true],["📤","Lo comparto con mis compañeros",false],["🤫","Lo guardo en secreto",false],["🔗","Hago clic para averiguar qué pasa",false]];let picked=[];const box=document.getElementById("activityTools");box.innerHTML='<div id="routeStations" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px;margin:auto"></div><div id="route" class="feedbackBox" style="margin-top:18px;text-align:center">Estaciones elegidas: 0 de 3</div>';stations.forEach(x=>{const b=document.createElement("button");b.className="toolCard";b.innerHTML=`<span class="toolEmoji">${x[0]}</span>${x[1]}`;b.onclick=()=>{if(picked.includes(x[1]))return;if(x[2]){picked.push(x[1]);b.classList.add("correct");b.disabled=true;document.getElementById("route").textContent=`Estaciones elegidas: ${picked.length} de 3`;if(picked.length===3){document.querySelectorAll("#routeStations button").forEach(z=>z.disabled=true);document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🏆 ¡Ruta segura completada! Sabés detenerte, pedir ayuda y protegerte. ⭐ <b>¡Aventura completada!</b></div>';document.getElementById("activityNext").textContent="🎉 Terminar aventura";document.getElementById("activityNext").onclick=finishSegura;document.getElementById("activityNext").classList.remove("hidden");}}else document.getElementById("activityFeedback").innerHTML='<div class="feedbackBox">🤔 Esa estación no ayuda a estar más seguro. Elegí otra.</div>';};document.getElementById("routeStations").appendChild(b);});
+}
+function finishSegura(){document.getElementById("activityBar").style.width="100%";document.querySelector("#activity .small").textContent="🏆 AVENTURA COMPLETADA";document.querySelector("#activity h2").textContent="🔐 ¡Tecnología segura!";document.getElementById("activityQuestion").innerHTML="";document.getElementById("activityTools").innerHTML='<div class="feedbackBox" style="text-align:center;font-size:24px">🎉 ¡Felicitaciones!<br><br>Completaste los 5 desafíos de <b>Tecnología segura</b>. 🛡️💻<br><br>⭐ ¡Misión cumplida!</div>';document.getElementById("activityFeedback").innerHTML="";document.getElementById("activityNext").classList.add("hidden");}
+
+function startManos(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+let stage=0, selectedProjects=[], photos=[];
+const projects={
+ lapicero:{name:"Lapicero de papel decorado",emoji:"✏️",color:"#fff4d6",steps:[
+  ["1. Preparar", "Buscá una hoja o cartulina, lápiz, regla, tijera y pegamento.", "paper"],
+  ["2. Enrollar", "Enrollá el papel desde una esquina hasta formar un tubo firme.", "roll"],
+  ["3. Cerrar", "Pegá el borde para que el tubo no se desarme y dejá secar.", "glue"],
+  ["4. Decorar", "Agregá dibujos, colores, papelitos o formas para personalizarlo.", "decorate"]
+ ]},
+ portaretrato:{name:"Portarretrato con planchas de cartón",emoji:"🖼️",color:"#e9f5ff",steps:[
+  ["1. Marcar", "Marcá en el cartón un rectángulo grande y otro más pequeño para la ventana.", "frame"],
+  ["2. Recortar", "Con ayuda de un adulto si hace falta, recortá las piezas de cartón.", "cut"],
+  ["3. Armar", "Pegá las partes y agregá una base o soporte para que pueda mantenerse de pie.", "stand"],
+  ["4. Decorar", "Decoralo con papel, dibujos, tapitas u otros materiales seguros.", "decorateFrame"]
+ ]},
+ tateti:{name:"Juego Ta-Te-Ti con tapitas",emoji:"⭕",color:"#eef9e8",steps:[
+  ["1. Preparar", "Conseguí 6 tapitas: 3 para cada jugador. Podés decorarlas de dos maneras diferentes.", "caps"],
+  ["2. Hacer el tablero", "Dibujá sobre un cartón un tablero de Ta-Te-Ti con 9 casilleros.", "board"],
+  ["3. Decorar", "Pintá o marcá las tapitas para distinguir los dos equipos.", "capsDecorate"],
+  ["4. Probar", "Colocá las tapitas y jugá una partida respetando las reglas.", "play"]
+ ]}
+};
+function guideSVG(type){
+ const common='width="100%" height="180" viewBox="0 0 520 180" role="img" aria-label="Dibujo guía"';
+ const svgs={
+ paper:`<svg ${common}><rect x="80" y="45" width="350" height="90" rx="10" fill="#fff" stroke="#555" stroke-width="3"/><line x1="110" y1="60" x2="390" y2="60" stroke="#aaa" stroke-width="2"/><text x="260" y="160" text-anchor="middle" font-size="18">Hoja o cartulina</text></svg>`,
+ roll:`<svg ${common}><path d="M150 55 L365 55 L390 125 L175 125 Z" fill="#fff4d6" stroke="#555" stroke-width="3"/><path d="M170 60 Q210 90 170 120" fill="none" stroke="#777" stroke-width="3"/><path d="M365 60 Q330 90 365 120" fill="none" stroke="#777" stroke-width="3"/><text x="260" y="160" text-anchor="middle" font-size="18">Enrollá formando un tubo</text></svg>`,
+ glue:`<svg ${common}><rect x="145" y="45" width="230" height="80" rx="35" fill="#fff4d6" stroke="#555" stroke-width="3"/><path d="M360 38 L395 55 L360 72 Z" fill="#ddd" stroke="#555" stroke-width="3"/><circle cx="380" cy="55" r="5"/><text x="260" y="160" text-anchor="middle" font-size="18">Pegá el borde</text></svg>`,
+ decorate:`<svg ${common}><rect x="140" y="45" width="240" height="75" rx="30" fill="#fff4d6" stroke="#555" stroke-width="3"/><circle cx="190" cy="82" r="12" fill="#ff8" stroke="#555"/><path d="M235 70 l20 25 l20-25 l20 25" fill="none" stroke="#555" stroke-width="4"/><text x="260" y="160" text-anchor="middle" font-size="18">¡Decorá a tu gusto!</text></svg>`,
+ frame:`<svg ${common}><rect x="150" y="25" width="220" height="130" fill="#c98" stroke="#555" stroke-width="4"/><rect x="195" y="55" width="130" height="70" fill="#fff" stroke="#555" stroke-width="3"/><text x="260" y="175" text-anchor="middle" font-size="16">Marco de cartón</text></svg>`,
+ cut:`<svg ${common}><rect x="145" y="35" width="230" height="110" fill="#c98" stroke="#555" stroke-width="4"/><rect x="200" y="60" width="120" height="60" fill="#fff" stroke="#555" stroke-width="3" stroke-dasharray="7 5"/><path d="M390 40 l45 45 l-35 20" fill="none" stroke="#555" stroke-width="4"/><text x="260" y="170" text-anchor="middle" font-size="16">Recortá por las líneas</text></svg>`,
+ stand:`<svg ${common}><rect x="150" y="35" width="220" height="110" fill="#c98" stroke="#555" stroke-width="4"/><path d="M180 145 L260 160 L340 145" fill="none" stroke="#555" stroke-width="6"/><text x="260" y="175" text-anchor="middle" font-size="16">Agregá una base</text></svg>`,
+ decorateFrame:`<svg ${common}><rect x="150" y="30" width="220" height="120" fill="#c98" stroke="#555" stroke-width="4"/><rect x="195" y="60" width="130" height="60" fill="#fff" stroke="#555" stroke-width="3"/><circle cx="165" cy="45" r="9" fill="#f99"/><circle cx="355" cy="135" r="9" fill="#9cf"/><text x="260" y="175" text-anchor="middle" font-size="16">Decorá el marco</text></svg>`,
+ caps:`<svg ${common}><circle cx="200" cy="85" r="28" fill="#ddd" stroke="#555" stroke-width="3"/><circle cx="260" cy="85" r="28" fill="#ddd" stroke="#555" stroke-width="3"/><circle cx="320" cy="85" r="28" fill="#ddd" stroke="#555" stroke-width="3"/><text x="260" y="155" text-anchor="middle" font-size="17">3 tapitas por jugador</text></svg>`,
+ board:`<svg ${common}><rect x="175" y="20" width="170" height="140" fill="#fff" stroke="#555" stroke-width="4"/><path d="M232 20 V160 M288 20 V160 M175 67 H345 M175 113 H345" stroke="#555" stroke-width="5"/><text x="260" y="177" text-anchor="middle" font-size="16">9 casilleros</text></svg>`,
+ capsDecorate:`<svg ${common}><circle cx="205" cy="80" r="28" fill="#f7d" stroke="#555" stroke-width="3"/><circle cx="315" cy="80" r="28" fill="#7df" stroke="#555" stroke-width="3"/><text x="205" y="88" text-anchor="middle" font-size="22">X</text><text x="315" y="88" text-anchor="middle" font-size="22">O</text><text x="260" y="155" text-anchor="middle" font-size="17">Dos equipos diferentes</text></svg>`,
+ play:`<svg ${common}><rect x="175" y="20" width="170" height="140" fill="#fff" stroke="#555" stroke-width="4"/><path d="M232 20 V160 M288 20 V160 M175 67 H345 M175 113 H345" stroke="#555" stroke-width="5"/><text x="203" y="56" font-size="28">X</text><text x="258" y="100" font-size="28">O</text><text x="312" y="145" font-size="28">X</text><text x="260" y="177" text-anchor="middle" font-size="16">¡A jugar!</text></svg>`
+ }; return svgs[type]||'';
+}
+function setStage(n){stage=n;render();}
+function render(){
+ document.getElementById("activityBar").style.width=((stage+1)*20)+'%';
+ document.querySelector('#activity .small').textContent=`🏆 MANOS A LA OBRA · ETAPA ${stage+1} DE 5`;
+ document.getElementById('activityNext').classList.add('hidden');
+ const q=document.getElementById('activityQuestion'), box=document.getElementById('activityTools'), fb=document.getElementById('activityFeedback');
+ fb.innerHTML='';
+ if(stage===0){
+  document.querySelector('#activity h2').textContent='💭 Antes de construir, pensamos';
+  q.innerHTML=`<div style="max-width:850px;margin:auto;text-align:left"><p><b>Respondé pensando en tu proyecto:</b></p><div style="display:grid;gap:12px"><label>🔎 ¿Qué objeto te gustaría crear y para qué podría servir?<textarea id="q1" rows="2" placeholder="Mi producto podría servir para..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label><label>🏠 ¿Dónde lo usarías: en tu casa, en la escuela o para jugar?<textarea id="q2" rows="2" placeholder="Lo usaría en... porque..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label><label>♻️ ¿Qué materiales que ya tenés en casa podrías reutilizar?<textarea id="q3" rows="2" placeholder="Podría reutilizar..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label><label>⭐ ¿Cómo te gustaría decorarlo para que sea único?</label><textarea id="q4" rows="2" placeholder="Lo decoraría con..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></div><br><button class="toolCard" onclick="checkThinking()">🧠 Ya pensé mi idea</button></div>`;
+  window.checkThinking=()=>{const ids=['q1','q2','q3','q4'];if(ids.every(id=>document.getElementById(id).value.trim().length>=3)){fb.innerHTML='<div class="feedbackBox">💡 ¡Excelente! Ya pensaste qué querés crear y por qué. Ahora elegí tu proyecto.</div>';showNext(()=>setStage(1),'➡️ Elegir mi proyecto');}else fb.innerHTML='<div class="feedbackBox">💭 Completá brevemente las cuatro preguntas para planificar tu creación.</div>';};
+ } else if(stage===1){
+  document.querySelector('#activity h2').textContent='🎯 Elegí tu proyecto';
+  q.innerHTML=`<p>Podés elegir <b>uno, dos o los tres</b>. ¡Vos decidís cuánto querés crear!</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">${Object.entries(projects).map(([k,p])=>`<button class="toolCard projectChoice" data-p="${k}" onclick="toggleProject('${k}',this)"><span class="toolEmoji">${p.emoji}</span><b>${p.name}</b><br><small>Elegir este proyecto</small></button>`).join('')}</div><div id="chosenProjects" class="feedbackBox" style="margin-top:16px">Proyectos elegidos: ninguno</div>`;
+  window.toggleProject=(k,b)=>{if(selectedProjects.includes(k)){selectedProjects=selectedProjects.filter(x=>x!==k);b.classList.remove('correct');}else{selectedProjects.push(k);b.classList.add('correct');}document.getElementById('chosenProjects').textContent='Proyectos elegidos: '+(selectedProjects.length?selectedProjects.map(x=>projects[x].name).join(' · '):'ninguno');if(selectedProjects.length){fb.innerHTML='<div class="feedbackBox">🎉 ¡Buena elección! Podés hacer uno, dos o los tres proyectos.</div>';showNext(()=>setStage(2),'➡️ Ver los pasos');}};
+ } else if(stage===2){
+  document.querySelector('#activity h2').textContent='📚 Guías paso a paso';
+  let html='<p>Seguí la guía del proyecto que elegiste. Podés volver a mirar estos pasos mientras construís.</p>';
+  selectedProjects.forEach(k=>{const p=projects[k];html+=`<section style="background:${p.color};border:3px solid #d9def0;border-radius:18px;padding:18px;margin:14px 0;text-align:left"><h3 style="margin-top:0">${p.emoji} ${p.name}</h3>`;p.steps.forEach(st=>{html+=`<div style="background:white;border-radius:14px;padding:12px;margin:10px 0"><h4 style="margin:0 0 6px">${st[0]}</h4><p style="margin:4px 0">${st[1]}</p>${guideSVG(st[2])}</div>`});html+='</section>';});
+  q.innerHTML=html;fb.innerHTML='<div class="feedbackBox">🛠️ Trabajá con cuidado. Si necesitás tijera u otra herramienta, pedí ayuda a un adulto.</div>';showNext(()=>setStage(3),'➡️ Empezar a construir');
+ } else if(stage===3){
+  document.querySelector('#activity h2').textContent='🛠️ Construyo y registro mi proceso';
+  q.innerHTML=`<p>Construí tu proyecto siguiendo los dibujos guía. Después subí <b>hasta 5 fotos en total</b>.</p><div class="feedbackBox" style="text-align:left"><b>📸 Ideas para tus fotos:</b><br>1️⃣ Materiales preparados · 2️⃣ Primeros pasos · 3️⃣ Construcción · 4️⃣ Detalle o decoración · 5️⃣ Producto terminado</div><input id="photosManos" type="file" accept="image/*" multiple style="font-size:16px;margin:14px 0"><div id="photoPreview" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"></div>`;
+  const inp=document.getElementById('photosManos');inp.onchange=function(){photos=Array.from(this.files).slice(0,5);if(this.files.length>5)fb.innerHTML='<div class="feedbackBox">📷 Solo se pueden registrar 5 fotos como máximo. Se tomarán las primeras 5.</div>';renderPhotoPreview();};
+  function renderPhotoPreview(){const p=document.getElementById('photoPreview');if(!p)return;p.innerHTML='';photos.forEach((f,i)=>{const wrap=document.createElement('div');wrap.style='width:135px;text-align:center';const img=document.createElement('img');img.src=URL.createObjectURL(f);img.style='width:120px;height:95px;object-fit:cover;border-radius:12px;border:3px solid #d9def0';wrap.appendChild(img);wrap.insertAdjacentHTML('beforeend',`<div style="font-size:13px;margin-top:4px">Foto ${i+1}</div>`);p.appendChild(wrap);});}
+  window.checkPhotosManos=()=>{if(photos.length>=1){fb.innerHTML=`<div class="feedbackBox">📸 ¡Muy bien! Registraste ${photos.length} foto${photos.length===1?'':'s'} de tu proceso. Recordá que el máximo es 5.</div>`;showNext(()=>setStage(4),'➡️ Completar mi presentación');}else fb.innerHTML='<div class="feedbackBox">📷 Subí al menos una foto para mostrar que comenzaste tu proyecto.</div>';};
+  const btn=document.createElement('button');btn.className='toolCard';btn.textContent='📷 Revisar mis fotos';btn.onclick=checkPhotosManos;box.innerHTML='';box.appendChild(btn);
+ } else if(stage===4){
+  document.querySelector('#activity h2').textContent='🌟 Presento lo que hice';
+  q.innerHTML=`<p>Contanos cómo fue tu experiencia. No buscamos una respuesta perfecta: queremos conocer tus ideas.</p><div style="display:grid;gap:12px;max-width:850px;margin:auto;text-align:left"><label>🧩 ¿Qué proyecto o proyectos hiciste?<textarea id="p1" rows="2" placeholder="Hice..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label><label>💡 ¿Qué fue lo más fácil y qué fue lo más difícil?<textarea id="p2" rows="2" placeholder="Lo más fácil fue... y lo más difícil..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label><label>🛠️ ¿Qué cambiarías si lo volvieras a construir?<textarea id="p3" rows="2" placeholder="Cambiaría..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label><label>❤️ ¿Qué parte de tu creación te gusta más?<textarea id="p4" rows="2" placeholder="Me gusta..." style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></textarea></label></div><br><button class="toolCard" onclick="finishManosNueva()">🏆 Presentar mi proyecto</button>`;
+  fb.innerHTML=`<div class="feedbackBox">📸 Fotos registradas: <b>${photos.length} de 5 máximo</b><br>Elegiste: <b>${selectedProjects.map(k=>projects[k].name).join(' · ')}</b></div>`;
+  window.finishManosNueva=()=>{const ids=['p1','p2','p3','p4'];if(ids.every(id=>document.getElementById(id).value.trim().length>=3))finishManosNuevaFinal();else fb.innerHTML='<div class="feedbackBox">💭 Completá las cuatro preguntas para presentar tu experiencia.</div>';};
+ }
+}
+function showNext(fn,text){const b=document.getElementById('activityNext');b.textContent=text;b.onclick=fn;b.classList.remove('hidden');}
+function finishManosNuevaFinal(){document.getElementById('activityBar').style.width='100%';document.querySelector('#activity .small').textContent='🏆 MISIÓN CUMPLIDA';document.querySelector('#activity h2').textContent='🎉 ¡Manos a la Obra completada!';document.getElementById('activityQuestion').innerHTML='';document.getElementById('activityTools').innerHTML='<div class="feedbackBox" style="text-align:center;font-size:23px">🌟 ¡Felicitaciones!<br><br>Elegiste, pensaste, construiste y registraste tu proyecto tecnológico.<br><br>📸 Guardaste hasta <b>5 fotos</b> de tu proceso.<br><br>🏆 ¡Sos un verdadero pequeño creador!</div>';document.getElementById('activityFeedback').innerHTML='';document.getElementById('activityNext').classList.add('hidden');}
+render();
+}
+
+function startEnergia3(){
+hideAll();document.getElementById("activity").classList.remove("hidden");let stage=0;
+const q=document.getElementById("activityQuestion"),box=document.getElementById("activityTools"),fb=document.getElementById("activityFeedback"),next=document.getElementById("activityNext");
+function head(){document.getElementById("activityBar").style.width=((stage+1)*20)+"%";document.querySelector("#activity .small").textContent=`⚡ ENERGÍA EN ACCIÓN · DESAFÍO ${stage+1} DE 5`;next.classList.add("hidden");fb.innerHTML="";box.innerHTML="";}
+function avanzar(txt){fb.innerHTML=`<div class="feedbackBox">${txt}</div>`;next.textContent=stage===4?'🏆 Finalizar':'➡️ Siguiente desafío';next.onclick=()=>{stage++;render()};next.classList.remove('hidden');}
+function render(){head();
+if(stage===0){document.querySelector('#activity h2').textContent='🏠 Cazadores de energía';q.innerHTML='<p>Encontrá los <b>4 objetos que necesitan energía eléctrica</b> para funcionar. Tocá solamente esos objetos.</p>';
+const items=[['💡','Lámpara',1],['🧹','Escoba',0],['📺','Televisor',1],['✏️','Lápiz',0],['🌀','Ventilador',1],['📖','Libro',0],['🧊','Heladera',1],['🥄','Cuchara',0]];let ok=0;items.sort(()=>Math.random()-.5).forEach(x=>{let b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">${x[0]}</span><b>${x[1]}</b>`;b.onclick=()=>{if(b.disabled)return;if(x[2]){b.disabled=true;b.classList.add('correct');ok++;fb.innerHTML='<div class="feedbackBox">⚡ ¡Encontraste uno! Seguí buscando.</div>';if(ok===4)avanzar('🌟 ¡Excelente! Encontraste los cuatro objetos que necesitan energía eléctrica.');}else fb.innerHTML='<div class="feedbackBox">🔎 Ese objeto puede usarse sin electricidad. Buscá otro.</div>';};box.appendChild(b)});
+}else if(stage===1){document.querySelector('#activity h2').textContent='🔌 El camino de la energía';q.innerHTML='<p>Una lámpara está apagada. Armá el camino correcto para que pueda encenderse.</p><p><b>Tocá las tarjetas en el orden correcto.</b></p><div id="camino" class="feedbackBox">Camino: —</div>';let seq=[];const correct=['🔌 Enchufe','〰️ Cable','🎚️ Interruptor','💡 Lámpara'];[['💡','Lámpara'],['🎚️','Interruptor'],['🔌','Enchufe'],['〰️','Cable']].sort(()=>Math.random()-.5).forEach(x=>{let b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">${x[0]}</span>${x[1]}`;b.onclick=()=>{if(b.disabled)return;let val=x[0]+' '+x[1];if(val===correct[seq.length]){seq.push(val);b.disabled=true;b.classList.add('correct');document.getElementById('camino').textContent='Camino: '+seq.join(' → ');if(seq.length===4)avanzar('💡 ¡Se encendió! Organizaste correctamente el recorrido de la energía.');}else fb.innerHTML='<div class="feedbackBox">🧩 Ese paso todavía no va. Pensá: ¿dónde comienza el recorrido?</div>';};box.appendChild(b)});
+}else if(stage===2){document.querySelector('#activity h2').textContent='🎭 ¿Qué energía se transforma?';q.innerHTML='<p>Jugamos a las <b>mímicas de transformación</b>. Leé cada escena y elegí qué resultado produce la energía.</p><div id="escena" class="feedbackBox"></div><div id="escopts"></div>';const scenes=[['🌀 Un ventilador recibe electricidad.','Movimiento',['Movimiento','Frío guardado','Agua']],['🔦 Una linterna recibe energía de sus pilas.','Luz',['Sonido','Luz','Viento']],['🔔 Un timbre eléctrico recibe electricidad.','Sonido',['Calor','Sonido','Movimiento de agua']]];let i=0;function show(){if(i===3){avanzar('🎉 ¡Muy bien! Descubriste que la energía puede producir distintos efectos: movimiento, luz y sonido.');return}let sc=scenes[i];document.getElementById('escena').innerHTML='<b>'+sc[0]+'</b>';let o=document.getElementById('escopts');o.innerHTML='';sc[2].sort(()=>Math.random()-.5).forEach(v=>{let b=document.createElement('button');b.className='toolCard';b.textContent=v;b.onclick=()=>{if(v===sc[1]){i++;show()}else fb.innerHTML='<div class="feedbackBox">💭 Observá qué hace realmente ese objeto cuando funciona.</div>';};o.appendChild(b)});}show();
+}else if(stage===3){document.querySelector('#activity h2').textContent='🕵️ Misión: evitar el derroche';q.innerHTML='<p>En esta habitación hay <b>4 acciones</b>. Marcá solamente las que ayudan a usar la energía responsablemente.</p>';const acts=[['☀️','Abrir la cortina y aprovechar la luz del día',1],['💡','Dejar la luz prendida al salir',0],['📺','Apagar el televisor cuando nadie lo mira',1],['🔌','Desconectar un cargador que ya no se usa',1],['🌀','Dejar el ventilador encendido en una habitación vacía',0],['🚪','Apagar la luz antes de salir de la habitación',1]];let ok=0;acts.sort(()=>Math.random()-.5).forEach(x=>{let b=document.createElement('button');b.className='toolCard';b.innerHTML=`<span class="toolEmoji">${x[0]}</span>${x[1]}`;b.onclick=()=>{if(b.disabled)return;if(x[2]){b.disabled=true;b.classList.add('correct');ok++;if(ok===4)avanzar('🌱 ¡Misión cumplida! Elegiste cuatro formas responsables de usar la energía.');else fb.innerHTML='<div class="feedbackBox">✅ ¡Buena decisión! Todavía quedan acciones responsables por encontrar.</div>';}else fb.innerHTML='<div class="feedbackBox">⚠️ Esa acción desperdicia energía. Probá con otra.</div>';};box.appendChild(b)});
+}else{document.querySelector('#activity h2').textContent='🎨 Diseñá una etiqueta ahorradora';q.innerHTML='<p>Creá una <b>etiqueta o cartel</b> para colocar cerca de un objeto tecnológico de tu casa o escuela. Debe recordar cómo usar la energía responsablemente.</p><div style="max-width:900px;margin:auto;text-align:left"><label>Objeto elegido:<input id="objE" style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></label><br><br><label>Escribí tu mensaje:<input id="msgE" placeholder="Ej.: Apagame cuando no me uses" style="width:100%;padding:12px;border:2px solid #d9def0;border-radius:12px;font-size:16px"></label><br><br><div id="labelE" style="min-height:260px;border:4px dashed #8aa4d6;border-radius:20px;background:white;padding:25px;text-align:center;font-size:28px;display:flex;align-items:center;justify-content:center">🎨 Tu etiqueta aparecerá acá</div></div>';let b=document.createElement('button');b.className='toolCard';b.textContent='✨ Crear mi etiqueta';b.onclick=()=>{let o=document.getElementById('objE').value.trim(),m=document.getElementById('msgE').value.trim();if(o.length<2||m.length<6){fb.innerHTML='<div class="feedbackBox">✍️ Escribí el objeto y un mensaje claro para cuidar la energía.</div>';return}document.getElementById('labelE').innerHTML=`<div>⚡ <b>${o}</b><br><br>${m}<br><br>🌱 ¡Cuidemos la energía!</div>`;fb.innerHTML='<div class="feedbackBox">🏆 ¡Aventura completada! Creaste un mensaje tecnológico para promover el uso responsable de la energía.</div>';document.getElementById('activityBar').style.width='100%';document.querySelector('#activity .small').textContent='🏆 MISIÓN CUMPLIDA';};box.appendChild(b);}
+}
+render();}
+
+
+function startMensajes3(){
+hideAll();document.getElementById("activity").classList.remove("hidden");
+let stage=0;
+const q=document.getElementById("activityQuestion"), box=document.getElementById("activityTools"), fb=document.getElementById("activityFeedback"), next=document.getElementById("activityNext");
+function mix(a){return a.slice().sort(()=>Math.random()-.5)}
+function head(){document.getElementById("activityBar").style.width=((stage+1)*20)+"%";document.querySelector("#activity .small").textContent="📡 MENSAJES TECNOLÓGICOS · ACTIVIDAD "+(stage+1)+" DE 5";next.classList.add("hidden");fb.innerHTML="";box.innerHTML="";}
+function advance(msg){fb.innerHTML='<div class="feedbackBox">'+msg+'</div>';next.textContent=stage===4?"🏆 Finalizar aventura":"➡️ Siguiente actividad";next.onclick=()=>{if(stage===4)goGrade();else{stage++;render()}};next.classList.remove("hidden");}
+function render(){head();
+if(stage===0){
+ document.querySelector('#activity h2').textContent="🔣 Actividad 1: El idioma de los símbolos";
+ q.innerHTML='<p>Los símbolos aparecen en muchos objetos tecnológicos. <b>Relacioná cada símbolo con su significado.</b></p><p>Completá las 4 asociaciones.</p><div id="symbolGame" style="display:grid;gap:14px;max-width:900px;margin:auto"></div>';
+ const pairs=[["⏻","Encendido / apagado"],["🔋","Batería / energía"],["♻️","Reciclar"],["⚠️","Advertencia"]];let i=0;
+ function show(){const el=document.getElementById('symbolGame');el.innerHTML='';const d=pairs[i];const opts=mix([d[1],...pairs.filter(x=>x[1]!==d[1]).slice(0,2).map(x=>x[1])]);el.innerHTML='<div class="feedbackBox" style="font-size:60px;text-align:center">'+d[0]+'</div><div class="feedbackBox" style="font-size:18px"><b>¿Qué informa este símbolo?</b></div>';opts.forEach(v=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:70px;padding:16px;font-size:19px;white-space:normal;overflow-wrap:anywhere';b.textContent=v;b.onclick=()=>{if(v===d[1]){i++;if(i===pairs.length)advance('🎉 ¡Muy bien! Interpretaste símbolos tecnológicos.');else show()}else fb.innerHTML='<div class="feedbackBox">🔎 Volvé a mirar el símbolo y pensá dónde lo encontrarías.</div>'};el.appendChild(b)})}show();
+}else if(stage===1){
+ document.querySelector('#activity h2').textContent="📖 Actividad 2: Detective de instrucciones";
+ q.innerHTML='<p>Una buena instrucción tecnológica debe ser <b>clara, ordenada y precisa</b>. Elegí la mejor instrucción en cada caso.</p><div id="instrGame" style="display:grid;gap:14px;max-width:900px;margin:auto"></div>';
+ const rounds=[
+ ["Para encender una lámpara",["Apretá el botón de encendido.","Hacé eso de la lámpara.","Prendela como quieras."]],
+ ["Para abrir una caja con tapa",["Levantá la tapa desde la ranura.","Abrila como puedas.","Hacé lo de arriba."]],
+ ["Para guardar un archivo",["Elegí Guardar y escribí un nombre.","Guardá eso.","Ponelo en algún lado."]]
+ ];let r=0;
+ function show(){const el=document.getElementById('instrGame');el.innerHTML='<div class="feedbackBox"><b>Situación '+(r+1)+' de 3:</b> '+rounds[r][0]+'</div>';mix(rounds[r][1]).forEach(v=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:80px;padding:18px;font-size:19px;white-space:normal;overflow-wrap:anywhere;text-align:left';b.textContent=v;b.onclick=()=>{if(v===rounds[r][1][0]){r++;if(r===rounds.length)advance('📝 ¡Excelente! Reconociste instrucciones claras y precisas.');else show()}else fb.innerHTML='<div class="feedbackBox">💭 Una instrucción tecnológica debe decir exactamente qué hacer.</div>'};el.appendChild(b)})}show();
+}else if(stage===2){
+ document.querySelector('#activity h2').textContent="🗺️ Actividad 3: El plano misterioso";
+ q.innerHTML='<p>Un plano es una forma de representar un espacio. <b>Observá la cuadrícula y resolvé las pistas.</b></p><div style="max-width:620px;margin:12px auto"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#e8ecf5;padding:8px;border-radius:16px">'+['💡','⬜','🪑','⬜','📦','⬜','⬜','🛠️','⬜'].map(x=>'<div class="feedbackBox" style="min-height:70px;display:flex;align-items:center;justify-content:center;font-size:38px">'+x+'</div>').join('')+'</div></div><div id="planGame" style="display:grid;gap:14px;max-width:800px;margin:auto"></div>';
+ const qs=[["¿Qué objeto está en el centro?","📦"],["¿Qué objeto está abajo, en el centro?","🛠️"],["¿Qué objeto está arriba, a la derecha?","🪑"]];let i=0;
+ function show(){const el=document.getElementById('planGame');el.innerHTML='<div class="feedbackBox"><b>Pista '+(i+1)+' de 3:</b> '+qs[i][0]+'</div>';mix(['💡','📦','🪑','🛠️']).forEach(v=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:70px;font-size:30px';b.textContent=v;b.onclick=()=>{if(v===qs[i][1]){i++;if(i===qs.length)advance('🗺️ ¡Plano leído! Usaste una representación para obtener información.');else show()}else fb.innerHTML='<div class="feedbackBox">🔎 Volvé a observar la posición indicada en el plano.</div>'};el.appendChild(b)})}show();
+}else if(stage===3){
+ document.querySelector('#activity h2').textContent="🧩 Actividad 4: Repará el mensaje";
+ q.innerHTML='<p>Una indicación quedó incompleta. <b>Elegí la palabra que permite que el mensaje tecnológico tenga sentido.</b></p><div id="missingGame" style="display:grid;gap:14px;max-width:900px;margin:auto"></div>';
+ const rounds=[
+ ["Antes de usar una herramienta peligrosa, pedí ayuda a un ___ si la necesitás.","adulto",["adulto","dibujo","color"]],
+ ["Para encender un aparato, conectá el ___ y luego usá el botón.","enchufe",["enchufe","cuaderno","cartón"]],
+ ["Para guardar una herramienta, dejala en un lugar ___ y ordenado.","seguro",["seguro","mojado","roto"]]
+ ];let i=0;
+ function show(){const el=document.getElementById('missingGame');el.innerHTML='<div class="feedbackBox" style="font-size:19px;line-height:1.5"><b>Mensaje '+(i+1)+' de 3:</b><br>'+rounds[i][0]+'</div>';mix(rounds[i][2]).forEach(v=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:70px;font-size:19px;white-space:normal;overflow-wrap:anywhere';b.textContent=v;b.onclick=()=>{if(v===rounds[i][1]){i++;if(i===rounds.length)advance('🧩 ¡Mensaje reparado! Completaste indicaciones tecnológicas correctamente.');else show()}else fb.innerHTML='<div class="feedbackBox">🤔 Probá con una palabra que haga que la frase tenga sentido.</div>'};el.appendChild(b)})}show();
+}else{
+ document.querySelector('#activity h2').textContent="🎨 Actividad 5: Creá tu propio símbolo tecnológico";
+ q.innerHTML='<p>Ahora vos vas a comunicar una idea tecnológica. <b>Inventá un símbolo, dibujalo y explicá qué significa.</b></p><div style="max-width:900px;margin:auto"><canvas id="symCanvas" width="900" height="500" style="width:100%;height:auto;border:5px dashed #9aa9c9;border-radius:20px;background:white;touch-action:none"></canvas><p><button id="clearSym" class="secondary">🧹 Borrar dibujo</button></p><textarea id="symText" rows="4" placeholder="Mi símbolo significa... y sirve para..." style="width:100%;padding:14px;border:3px solid #d9def0;border-radius:12px;font-size:18px;box-sizing:border-box"></textarea></div>';
+ const c=document.getElementById('symCanvas'),ctx=c.getContext('2d');ctx.lineWidth=6;ctx.lineCap='round';let drawing=false;function pos(e){const r=c.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*c.width/r.width,y:(t.clientY-r.top)*c.height/r.height}}c.onmousedown=e=>{drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};c.onmousemove=e=>{if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()};c.onmouseup=()=>drawing=false;c.onmouseleave=()=>drawing=false;c.ontouchstart=e=>{e.preventDefault();drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};c.ontouchmove=e=>{e.preventDefault();if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()};c.ontouchend=()=>drawing=false;document.getElementById('clearSym').onclick=()=>ctx.clearRect(0,0,c.width,c.height);
+ const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:70px;font-size:19px';b.textContent='📡 Presentar mi símbolo';b.onclick=()=>{const t=document.getElementById('symText').value.trim();if(t.length<12){fb.innerHTML='<div class="feedbackBox">✍️ Explicá qué significa tu símbolo y para qué sirve.</div>';return}advance('🏆 ¡Excelente! Creaste una representación tecnológica y explicaste su significado.')};box.appendChild(b);
+}}
+render();
+}
+
+
+function startDesafios3(){
+hideAll();document.getElementById("activity").classList.remove("hidden");
+let stage=0;
+const q=document.getElementById("activityQuestion"),box=document.getElementById("activityTools"),fb=document.getElementById("activityFeedback"),next=document.getElementById("activityNext");
+function mix(a){return a.slice().sort(()=>Math.random()-.5)}
+function head(){document.getElementById("activityBar").style.width=((stage+1)*20)+"%";document.querySelector("#activity .small").textContent="🧭 DESAFÍOS TECNOLÓGICOS · DESAFÍO "+(stage+1)+" DE 5";next.classList.add("hidden");fb.innerHTML="";box.innerHTML=""}
+function advance(msg){fb.innerHTML='<div class="feedbackBox">'+msg+'</div>';next.textContent=stage===4?"🏆 Finalizar aventura":"➡️ Siguiente desafío";next.onclick=()=>{if(stage===4)goGrade();else{stage++;render()}};next.classList.remove("hidden")}
+function render(){head();
+if(stage===0){
+ document.querySelector('#activity h2').textContent='🔎 Desafío 1: Sopa tecnológica';
+ q.innerHTML='<p>Encontrá las <b>8 palabras de Tecnología</b>. Pueden estar en horizontal, vertical o diagonal, y algunas pueden aparecer al revés.</p><p style="font-size:16px">🧠 Dificultad media: seleccioná las letras de cada palabra <b>en orden</b>. Cuando completes una palabra, quedará marcada.</p><div id="wordList" class="feedbackBox" style="line-height:1.8">TECNOLOGIA · MATERIAL · PROCESO · HERRAMIENTA · ENERGIA · MAQUINA · FUNCION · DISENO</div><div id="wordInfo" class="feedbackBox">Encontradas: 0 de 8</div><div id="sopa" style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px;max-width:720px;margin:14px auto"></div>';
+ const flat="JPGOSECORPSAZFPYIYEJJACIKONESIDAPTHGLFKVTTOGSNBOZAGAXLBYAEYLOFINIEJNVIAOZDERAGIEJMENQXLDEURYFAOCVMCNQTKEURVEWMKABSAHNRGTZUMWABEMQETHSNFUNCIONHWD"; const targets={"TECNOLOGIA": [119, 107, 95, 83, 71, 59, 47, 35, 23, 11], "MATERIAL": [127, 114, 101, 88, 75, 62, 49, 36], "PROCESO": [9, 8, 7, 6, 5, 4, 3], "HERRAMIENTA": [141, 129, 117, 105, 93, 81, 69, 57, 45, 33, 21], "ENERGIA": [129, 116, 103, 90, 77, 64, 51], "MAQUINA": [122, 111, 100, 89, 78, 67, 56], "FUNCION": [134, 135, 136, 137, 138, 139, 140], "DISENO": [30, 29, 28, 27, 26, 25]}; const names=Object.keys(targets); const el=document.getElementById('sopa'); let current=[]; let found=new Set();
+ flat.split('').forEach((ch,i)=>{let b=document.createElement('button');b.textContent=ch;b.dataset.i=i;b.style.cssText='aspect-ratio:1;border:2px solid #cfd6e6;border-radius:8px;background:white;font-weight:800;font-size:clamp(12px,2vw,20px);cursor:pointer';b.onclick=()=>{if(found.size===8)return; const pos=+b.dataset.i; if(current.includes(pos))return; current.push(pos); b.style.background='#fff0b8';
+   let matched=names.find(w=>targets[w].length===current.length && targets[w].every((v,j)=>v===current[j]));
+   if(matched){found.add(matched);current.forEach(p=>el.children[p].style.background='#dff7e8');document.getElementById('wordInfo').textContent=`Encontradas: ${found.size} de 8`;current=[];if(found.size===8)advance('🎉 ¡Sopa resuelta! Encontraste las ocho palabras y prestaste atención a su recorrido.');}
+   else if(!names.some(w=>targets[w].slice(0,current.length).every((v,j)=>v===current[j]))){current.forEach(p=>el.children[p].style.background='#ffe8e8');setTimeout(()=>current.forEach(p=>el.children[p].style.background='white'),350);current=[];fb.innerHTML='<div class="feedbackBox">🔎 Esa combinación no forma una de las palabras. Probá de nuevo desde la primera letra.</div>';}
+ };el.appendChild(b)});
+}else if(stage===1){
+ document.querySelector('#activity h2').textContent='🧲 Desafío 2: Arrastrá y clasificá';
+ q.innerHTML='<p>Arrastrá cada elemento hasta el grupo que corresponda. <b>Leé bien antes de decidir.</b></p><div id="dragGroups" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:1000px;margin:auto"></div>';
+ const groups=[['🖐️','Tecnología manual','🔨 Martillo'],['⚙️','Tecnología mecánica','🚲 Bicicleta'],['💻','Tecnología digital','⌨️ Teclado']];
+ const targets=document.getElementById('dragGroups'); groups.forEach(g=>{let d=document.createElement('div');d.className='feedbackBox';d.dataset.group=g[1];d.innerHTML=`<div style="font-size:38px">${g[0]}</div><b>${g[1]}</b><div class="dropzone" style="min-height:100px;margin-top:10px;border:3px dashed #aab7d1;border-radius:14px;padding:12px">Soltá aquí</div>`;d.querySelector('.dropzone').ondragover=e=>e.preventDefault();d.querySelector('.dropzone').ondrop=e=>{let id=e.dataTransfer.getData('text/plain'),el=document.getElementById(id);if(el.dataset.group===g[1]){el.remove();d.querySelector('.dropzone').innerHTML='<b>✅ '+el.textContent+'</b>';correct++;if(correct===3)advance('🏆 ¡Clasificación completa! Reconociste distintas formas en que la tecnología ayuda a realizar tareas.')}else fb.innerHTML='<div class="feedbackBox">💭 Pensá qué característica tiene ese elemento y volvé a intentarlo.</div>'};targets.appendChild(d)});
+ let correct=0; const items=mix([['🔨 Martillo','Tecnología manual'],['🚲 Bicicleta','Tecnología mecánica'],['⌨️ Teclado','Tecnología digital']]);const area=document.createElement('div');area.style.cssText='display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:18px';items.forEach((x,i)=>{let b=document.createElement('button');b.id='drag'+i;b.className='toolCard';b.draggable=true;b.dataset.group=x[1];b.textContent=x[0];b.ondragstart=e=>e.dataTransfer.setData('text/plain',b.id);area.appendChild(b)});box.appendChild(area);
+ }else if(stage===2){
+ document.querySelector('#activity h2').textContent='👀 Desafío 3: Mirá con atención';
+ q.innerHTML='<p>Observá con atención la imagen. Después respondé las preguntas sobre sus partes y su función.</p><div style="max-width:760px;margin:12px auto;background:white;border:4px solid #d9def0;border-radius:20px;padding:18px;box-sizing:border-box"><svg viewBox="0 0 760 360" width="100%" role="img" aria-label="Imagen de una bicicleta con partes numeradas"><rect x="0" y="0" width="760" height="360" rx="18" fill="#f7f9ff"/><circle cx="220" cy="250" r="82" fill="none" stroke="#34495e" stroke-width="10"/><circle cx="560" cy="250" r="82" fill="none" stroke="#34495e" stroke-width="10"/><path d="M220 250 L350 150 L430 250 L220 250 M350 150 L560 250 M350 150 L320 105 M320 105 L370 105 M430 250 L455 175 M455 175 L520 175" fill="none" stroke="#e67e22" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="350" cy="150" r="13" fill="#2c3e50"/><circle cx="430" cy="250" r="13" fill="#2c3e50"/><line x1="220" y1="250" x2="205" y2="190" stroke="#34495e" stroke-width="8"/><line x1="560" y1="250" x2="585" y2="190" stroke="#34495e" stroke-width="8"/>'+
+ '<g font-family="Arial" font-weight="700" font-size="24" fill="#1f2d3d"><circle cx="170" cy="150" r="22" fill="#ffe08a"/><text x="162" y="158">1</text><circle cx="320" cy="78" r="22" fill="#ffe08a"/><text x="312" y="86">2</text><circle cx="490" cy="125" r="22" fill="#ffe08a"/><text x="482" y="133">3</text><circle cx="455" cy="285" r="22" fill="#ffe08a"/><text x="447" y="293">4</text><circle cx="610" cy="150" r="22" fill="#ffe08a"/><text x="602" y="158">5</text></g><text x="285" y="335" font-family="Arial" font-size="22" font-weight="700" fill="#34495e">Bicicleta: observá sus partes y cómo se relacionan.</text></svg></div><div id="lookGame" style="display:grid;gap:14px;max-width:850px;margin:auto"></div>';
+ const rounds=[
+ ['¿Qué parte permite que la bicicleta avance cuando la persona pedalea?',['1 — Rueda','2 — Asiento','4 — Pedal'],2],
+ ['¿Qué parte sirve para que la persona pueda sentarse?',['2 — Asiento','3 — Manubrio','5 — Rueda trasera'],0],
+ ['¿Qué parte se utiliza para dirigir la bicicleta?',['4 — Pedal','3 — Manubrio','1 — Rueda delantera'],1],
+ ['¿Cuál de estas partes está en contacto con el suelo y permite el desplazamiento?',['2 — Asiento','3 — Manubrio','1 — Rueda'],2],
+ ['¿Qué podemos decir de la bicicleta?',['Sus partes trabajan juntas para permitir que se desplace.','Solo necesita una rueda para funcionar.','El asiento hace que la bicicleta avance.'],0]
+ ]; let i=0;
+ function show(){let el=document.getElementById('lookGame');el.innerHTML='<div class="feedbackBox"><b>Observación '+(i+1)+' de '+rounds.length+':</b><br>'+rounds[i][0]+'</div>';mix(rounds[i][1].map((v,j)=>[v,j])).forEach(x=>{let b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:76px;font-size:18px;white-space:normal;text-align:left;overflow-wrap:anywhere';b.textContent=x[0];b.onclick=()=>{if(x[1]===rounds[i][2]){i++;if(i===rounds.length)advance('🌟 ¡Muy bien! Observaste la imagen y relacionaste las partes de la bicicleta con sus funciones.');else show()}else fb.innerHTML='<div class="feedbackBox">🔎 Mirá nuevamente la parte numerada de la imagen y pensá qué función cumple.</div>'};el.appendChild(b)})}show();
+}else if(stage===3){
+ document.querySelector('#activity h2').textContent='🎯 Desafío 4: ¿Cuál es la mejor solución?';
+ q.innerHTML='<p>Leé cada situación y elegí la solución que realmente ayuda a resolver el problema.</p><div id="solGame" style="display:grid;gap:22px;max-width:920px;margin:auto"></div>';
+ const rounds=[
+ ['📚 Los libros se caen de una estantería. ¿Qué podemos hacer?',['Ponerlos en el piso y dejarlos allí.','Colocar un soporte o separador para mantenerlos ordenados.','Dejar la estantería vacía.'],1],
+ ['📄 En la escuela se usa mucho papel. ¿Qué solución ayuda a reducir el desperdicio?',['Usar las dos caras de una hoja cuando sea posible.','Tirar una hoja aunque todavía tenga un lado libre.','Usar una hoja nueva para cada pequeña anotación.'],0],
+ ['📦 Una caja se rompe cuando la trasladamos. ¿Qué podemos hacer?',['Transportarla abierta y sin protección.','Reforzarla con cinta y un material resistente antes de trasladarla.','Quitarle la tapa para que pese menos.'],1]
+ ];let i=0;
+ function show(){
+  const el=document.getElementById('solGame');
+  el.innerHTML='<div class="feedbackBox" style="font-size:20px;line-height:1.5;padding:22px"><b>Situación '+(i+1)+' de 3</b><br>'+rounds[i][0]+'</div><div id="solutionCards" style="display:flex;flex-direction:column;gap:16px;width:100%"></div>';
+  const cards=document.getElementById('solutionCards');
+  mix(rounds[i][1].map((v,j)=>[v,j])).forEach(x=>{
+   let b=document.createElement('button'); b.type='button'; b.className='toolCard';
+   b.style.cssText='width:100%;min-height:108px;padding:22px 26px;font-size:20px;line-height:1.5;white-space:normal;overflow-wrap:anywhere;word-break:normal;text-align:left;display:block;box-sizing:border-box;border-radius:20px';
+   b.textContent=x[0];
+   b.onclick=()=>{
+    if(x[1]===rounds[i][2]){b.classList.add('correct');i++;if(i===rounds.length)advance('💡 ¡Muy bien! Elegiste soluciones que realmente responden a cada problema tecnológico.');else setTimeout(show,350)}
+    else{b.classList.add('wrong');fb.innerHTML='<div class="feedbackBox">🔎 Pensá en el problema: una buena solución debe ayudar de verdad y poder realizarse.</div>';setTimeout(()=>b.classList.remove('wrong'),500)}
+   }; cards.appendChild(b);
+  });
+ }
+ show();
+}else{
+ document.querySelector('#activity h2').textContent='🎲 Desafío 5: Bingo tecnológico';
+ q.innerHTML='<p>¡Jugamos al bingo! Observá las imágenes y escuchá la pista. Hacé clic en el objeto que corresponde. <b>Completá las 5 pistas.</b></p><div id="bingoGame" style="max-width:900px;margin:auto"></div>';
+ const items=[['🚲','Bicicleta'],['🔦','Linterna'],['🧹','Aspiradora'],['📻','Radio'],['💻','Computadora'],['⏰','Reloj'],['📷','Cámara'],['🧊','Heladera'],['📺','Televisor']];
+ const clues=[
+ ['Tiene ruedas y permite trasladarse de un lugar a otro.','Bicicleta'],
+ ['Produce luz y puede ayudarnos cuando está oscuro.','Linterna'],
+ ['Sirve para limpiar el piso usando energía eléctrica.','Aspiradora'],
+ ['Permite escuchar sonidos y programas.','Radio'],
+ ['Tiene pantalla y teclado y puede utilizarse para aprender o trabajar.','Computadora']
+ ]; let i=0;
+ function show(){
+  const el=document.getElementById('bingoGame');
+  el.innerHTML='<div class="feedbackBox" style="font-size:20px;line-height:1.5;margin-bottom:18px"><b>Pista '+(i+1)+' de 5:</b><br>'+clues[i][0]+'</div><div id="bingoCards" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px"></div>';
+  const grid=document.getElementById('bingoCards');
+  mix(items.map(x=>x)).forEach(x=>{let b=document.createElement('button');b.type='button';b.className='toolCard';b.style.cssText='min-height:120px;padding:16px;font-size:18px;line-height:1.3;white-space:normal;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px';b.innerHTML='<span style="font-size:44px">'+x[0]+'</span><b>'+x[1]+'</b>';b.onclick=()=>{if(x[1]===clues[i][1]){b.classList.add('correct');i++;if(i===clues.length)advance('🏆 ¡Bingo completo! Reconociste distintos objetos tecnológicos a partir de sus características y funciones.');else setTimeout(show,300)}else{b.classList.add('wrong');fb.innerHTML='<div class="feedbackBox">🔎 Leé nuevamente la pista y observá las imágenes con atención.</div>';setTimeout(()=>b.classList.remove('wrong'),500)}};grid.appendChild(b)});
+ }
+ show();
+}}
+render();
+render();
+}
+
+function startViajeProducto3(){
+hideAll();
+document.getElementById("activity").classList.remove("hidden");
+let stage=0;
+const q=document.getElementById("activityQuestion"),box=document.getElementById("activityTools"),fb=document.getElementById("activityFeedback"),next=document.getElementById("activityNext");
+function header(){document.getElementById("activityBar").style.width=((stage+1)*20)+"%";document.querySelector("#activity .small").textContent=`💡 INGENIOS Y SOLUCIONES · DESAFÍO ${stage+1} DE 5`;next.classList.add("hidden");fb.innerHTML="";}
+function pass(msg){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;next.textContent=stage===4?"🏆 Finalizar aventura":"➡️ Siguiente desafío";next.onclick=()=>{if(stage===4)goGrade();else{stage++;render()}};next.classList.remove("hidden");}
+function fail(msg){fb.innerHTML=`<div class="feedbackBox">${msg}</div>`;}
+function render(){header();box.innerHTML="";
+function mix(a){return a.slice().sort(()=>Math.random()-0.5);}
+if(stage===0){
+ document.querySelector('#activity h2').textContent='🔍 Desafío 1: La lupa tecnológica';
+ q.innerHTML='<p>👀 Mirá la escena animada y después elegí los <b>4 objetos tecnológicos</b> que aparecen en la casa. Leé cada recuadro antes de responder.</p>';
+ box.innerHTML=`<div style="max-width:920px;margin:auto;background:#fff;border:4px solid #d9def0;border-radius:24px;padding:14px;box-shadow:0 8px 20px #0001"><svg viewBox="0 0 900 430" width="100%" role="img" aria-label="Escena animada de una casa con televisor, heladera, lámpara, bicicleta, mesa y silla">
+ <rect width="900" height="430" rx="20" fill="#fff5df"/><rect y="320" width="900" height="110" fill="#d8c09a"/>
+ <circle cx="110" cy="95" r="55" fill="#ffe58a"/><circle cx="110" cy="95" r="38" fill="#fff7c7"/>
+ <!-- ventana --> <rect x="45" y="165" width="180" height="120" rx="12" fill="#b9e6f7" stroke="#5b6f86" stroke-width="7"/><path d="M135 165v120M45 225h180" stroke="#5b6f86" stroke-width="6"/>
+ <!-- TV --> <rect x="300" y="145" width="250" height="135" rx="18" fill="#29344d"/><rect x="320" y="165" width="210" height="95" rx="10" fill="#7bd4f5"/><circle cx="425" cy="212" r="27" fill="#ffe27a"/><rect x="380" y="280" width="90" height="12" rx="6" fill="#29344d"/>
+ <!-- fridge --> <rect x="650" y="105" width="135" height="215" rx="16" fill="#f4f6fa" stroke="#6c7788" stroke-width="7"/><line x1="650" y1="205" x2="785" y2="205" stroke="#c4cad4" stroke-width="5"/><rect x="760" y="145" width="10" height="38" rx="5" fill="#777"/><rect x="760" y="235" width="10" height="38" rx="5" fill="#777"/>
+ <!-- table --> <rect x="325" y="315" width="230" height="28" rx="10" fill="#a86f42"/><rect x="350" y="343" width="18" height="70" fill="#795334"/><rect x="512" y="343" width="18" height="70" fill="#795334"/>
+ <!-- lamp --> <rect x="245" y="315" width="12" height="85" fill="#777"/><path d="M220 315 Q250 270 280 315 Z" fill="#ffd86b" stroke="#777" stroke-width="5"/><circle cx="250" cy="310" r="12" fill="#fff5a8"/>
+ <!-- bike --> <circle cx="125" cy="365" r="42" fill="none" stroke="#d45b7a" stroke-width="9"/><circle cx="235" cy="365" r="42" fill="none" stroke="#d45b7a" stroke-width="9"/><path d="M125 365 L160 320 L195 365 L125 365 M160 320 L185 320 M195 365 L215 320 L235 365 M160 320 L145 300" fill="none" stroke="#d45b7a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+ <text x="450" y="55" text-anchor="middle" font-size="30" font-weight="700" fill="#31405a">🏠 Una casa llena de tecnología</text>
+ </svg></div><p style="text-align:center;margin:14px 0;font-size:19px"><b>Encontrados: <span id="found1">0</span>/4</b></p><div id="hotspots1" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:850px;margin:auto"></div>`;
+ const opts=[['📺','Televisor',true],['🪑','Silla',false],['🧊','Heladera',true],['🚲','Bicicleta',true],['💡','Lámpara',true],['🪟','Ventana',false]];
+ let found=0; const area=document.getElementById('hotspots1');
+ opts.sort(()=>Math.random()-0.5).forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:92px;padding:18px;font-size:22px;white-space:normal;line-height:1.25';b.innerHTML='<span style="font-size:34px">'+o[0]+'</span><br><b>'+o[1]+'</b>';b.onclick=()=>{if(b.disabled)return;if(o[2]){b.disabled=true;b.classList.add('correct');found++;document.getElementById('found1').textContent=found;if(found===4)pass('🌟 ¡Lupa completa! Encontraste los cuatro objetos tecnológicos.')}else fail('🔎 Ese objeto aparece en la escena, pero no es uno de los cuatro que buscamos. Observá y pensá qué objeto fue creado para ayudar a realizar una tarea.')} ;area.appendChild(b)});
+}else if(stage===1){
+ document.querySelector('#activity h2').textContent='🃏 Desafío 2: Antes y después';
+ q.innerHTML='<p>Descubrí qué cambio tecnológico muestra cada pareja. <b>Gir&aacute; dos tarjetas</b> y encontrá las 3 parejas.</p>';
+ box.innerHTML='<div id="pairs1" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:900px;margin:auto"></div>';
+ const pairs=[['📷','Cámara de fotos','📱','Cámara del celular'],['☎️','Teléfono de antes','📲','Teléfono actual'],['💡','Lámpara antigua','💡','Lámpara LED']];
+ let cards=[];pairs.forEach((p,i)=>{cards.push([i,p[0],p[1]]);cards.push([i,p[2],p[3]])});cards.sort(()=>Math.random()-0.5);let first=null,lock=false,matched=0;
+ cards.forEach(c=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:130px;font-size:20px;white-space:normal';b.innerHTML='❔<br><small>Descubrir</small>';b.onclick=()=>{if(lock||b.disabled)return;b.innerHTML=`<span style="font-size:44px">${c[1]}</span><br><b>${c[2]}</b>`;if(!first){first={b,c};return;}if(first.c[0]===c[0]){b.disabled=true;first.b.disabled=true;b.classList.add('correct');first.b.classList.add('correct');first=null;matched++;if(matched===3)pass('🎉 ¡Encontraste las tres parejas! Reconociste cambios tecnológicos entre objetos de antes y de ahora.')}else{lock=true;setTimeout(()=>{b.innerHTML='❔<br><small>Descubrir</small>';first.b.innerHTML='❔<br><small>Descubrir</small>';first=null;lock=false},900)}};document.getElementById('pairs1').appendChild(b)});
+}else if(stage===2){
+ document.querySelector('#activity h2').textContent='🕵️ Desafío 3: Encontrá los usos que no ayudan';
+ q.innerHTML='<p>👀 Observá las <b>5 viñetas</b>. En todas aparece una situación en la que debemos mejorar el uso de la tecnología. Después, elegí cada situación para descubrirla.</p>';
+ box.innerHTML=`<div style="max-width:940px;margin:auto;background:#fff;border:4px solid #d9def0;border-radius:24px;padding:16px;box-shadow:0 8px 20px #0001"><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+ <div class="cartoonPanel"><div class="panelNum">1</div><svg viewBox="0 0 420 250" width="100%" aria-label="Niño mirando una pantalla demasiado cerca"><rect width="420" height="250" rx="18" fill="#fff4d6"/><rect x="35" y="45" width="150" height="105" rx="12" fill="#29344d"/><rect x="50" y="60" width="120" height="75" rx="8" fill="#79d7f4"/><circle cx="110" cy="98" r="18" fill="#ffd86b"/><circle cx="285" cy="100" r="42" fill="#f4c39e"/><path d="M250 150 Q285 125 320 150 L330 215 L240 215Z" fill="#78a8df"/><path d="M245 155 Q215 135 190 125" stroke="#f4c39e" stroke-width="18" fill="none" stroke-linecap="round"/><text x="210" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#31405a">Pantalla demasiado cerca</text></svg></div>
+ <div class="cartoonPanel"><div class="panelNum">2</div><svg viewBox="0 0 420 250" width="100%" aria-label="Persona usando teléfono mientras camina sin mirar"><rect width="420" height="250" rx="18" fill="#e8f7ff"/><rect y="195" width="420" height="55" fill="#b9c7d6"/><rect x="320" y="105" width="45" height="80" rx="8" fill="#f5f5f5" stroke="#68758a" stroke-width="5"/><circle cx="342" cy="125" r="7" fill="#ff7b7b"/><circle cx="342" cy="145" r="7" fill="#ffd85e"/><circle cx="342" cy="165" r="7" fill="#70d28b"/><circle cx="170" cy="90" r="38" fill="#f4c39e"/><path d="M135 135 Q170 115 205 135 L220 195 L120 195Z" fill="#8bb6e6"/><path d="M195 145 L255 165" stroke="#f4c39e" stroke-width="16" stroke-linecap="round"/><rect x="245" y="150" width="38" height="60" rx="6" fill="#263449"/><path d="M135 195 L115 235 M200 195 L220 235" stroke="#444" stroke-width="16"/><text x="210" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#31405a">Camina mirando el celular</text></svg></div>
+ <div class="cartoonPanel"><div class="panelNum">3</div><svg viewBox="0 0 420 250" width="100%" aria-label="Niño compartiendo una contraseña en una computadora"><rect width="420" height="250" rx="18" fill="#f0eaff"/><rect x="85" y="55" width="250" height="135" rx="14" fill="#29344d"/><rect x="105" y="75" width="210" height="95" rx="8" fill="#dff5ff"/><rect x="145" y="100" width="130" height="38" rx="8" fill="white" stroke="#8291a8" stroke-width="3"/><circle cx="165" cy="119" r="5" fill="#555"/><circle cx="185" cy="119" r="5" fill="#555"/><circle cx="205" cy="119" r="5" fill="#555"/><circle cx="225" cy="119" r="5" fill="#555"/><path d="M165 145 Q210 170 255 145" stroke="#e46d7d" stroke-width="6" fill="none"/><circle cx="210" cy="215" r="28" fill="#f4c39e"/><text x="210" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#31405a">Comparte una contraseña</text></svg></div>
+ <div class="cartoonPanel"><div class="panelNum">4</div><svg viewBox="0 0 420 250" width="100%" aria-label="Aparato eléctrico encendido sin necesidad"><rect width="420" height="250" rx="18" fill="#fff0f0"/><rect x="80" y="70" width="250" height="125" rx="14" fill="#f6f7f9" stroke="#66758a" stroke-width="6"/><rect x="105" y="92" width="200" height="75" rx="8" fill="#8ee3a9"/><circle cx="205" cy="130" r="23" fill="#ffd75c"/><path d="M205 165 L205 220" stroke="#555" stroke-width="8"/><path d="M185 220 Q205 235 225 220" stroke="#555" stroke-width="8" fill="none"/><text x="210" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#31405a">Aparato encendido sin necesidad</text></svg></div>
+ <div class="cartoonPanel" style="grid-column:1/-1;max-width:460px;justify-self:center"><div class="panelNum">5</div><svg viewBox="0 0 420 250" width="100%" aria-label="Persona limpiando un aparato eléctrico enchufado"><rect width="420" height="250" rx="18" fill="#eafff1"/><rect x="110" y="65" width="200" height="125" rx="16" fill="#dfe5ed" stroke="#68758a" stroke-width="6"/><rect x="135" y="90" width="150" height="65" rx="8" fill="#c8f0ff"/><path d="M200 185 L200 220" stroke="#555" stroke-width="8"/><circle cx="95" cy="160" r="38" fill="#f4c39e"/><path d="M115 160 L160 145" stroke="#f4c39e" stroke-width="14" stroke-linecap="round"/><rect x="150" y="125" width="75" height="28" rx="8" fill="#fff" stroke="#777" stroke-width="3"/><path d="M310 145 L365 145" stroke="#555" stroke-width="8"/><path d="M365 145 L385 175" stroke="#555" stroke-width="8"/><text x="210" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#31405a">Limpia el aparato enchufado</text></svg></div>
+ </div></div><p style="text-align:center;margin:14px 0"><b>Situaciones descubiertas: <span id="badFound">0</span>/5</b></p><div id="badOpts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;max-width:900px;margin:auto"></div>`;
+ const bad=[['1️⃣','Mirar una pantalla demasiado de cerca'],['2️⃣','Usar el teléfono mientras se camina sin mirar'],['3️⃣','Compartir una contraseña personal'],['4️⃣','Dejar un aparato encendido sin necesidad'],['5️⃣','Limpiar un aparato que está enchufado']];let n=0;const a=document.getElementById('badOpts');bad.sort(()=>Math.random()-0.5).forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:82px;padding:16px;white-space:normal;line-height:1.25;font-size:18px;text-align:left';b.innerHTML='<b>'+o[0]+' '+o[1]+'</b>';b.onclick=()=>{if(b.disabled)return;b.disabled=true;b.classList.add('correct');n++;document.getElementById('badFound').textContent=n;if(n===5)pass('🕵️ ¡Excelente! Observaste las cinco situaciones y reconociste formas de mejorar el uso de la tecnología.')} ;a.appendChild(b)});
+}else if(stage===3){
+ document.querySelector('#activity h2').textContent='🎒 Desafío 4: La mochila tecnológica';
+ q.innerHTML='<p>Una familia se prepara para realizar una tarea tecnológica. <b>Elegí los 4 elementos que realmente necesita</b> para armar un pequeño puesto de reparación.</p>';
+ box.innerHTML='<div id="bagItems" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;max-width:900px;margin:auto"></div><p style="text-align:center">Elegidos: <b id="bagCount">0</b>/4</p>';
+ const items=[['🪛','Destornillador',true],['🔧','Llave',true],['🧽','Paño',true],['📏','Regla',true],['🧸','Oso de peluche',false],['🍴','Tenedor',false],['⚽','Pelota',false],['🎩','Sombrero',false]];let count=0;items.sort(()=>Math.random()-0.5).forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:88px;white-space:normal';b.textContent=o[0]+' '+o[1];b.onclick=()=>{if(b.disabled)return;if(o[2]){b.disabled=true;b.classList.add('correct');count++;document.getElementById('bagCount').textContent=count;if(count===4)pass('🧰 ¡Misión cumplida! Seleccionaste recursos que pueden utilizarse en una tarea tecnológica.')}else fail('🤔 Ese elemento puede servir para otras cosas, pero no es un recurso necesario para esta tarea.')} ;document.getElementById('bagItems').appendChild(b)});
+}else{
+ document.querySelector('#activity h2').textContent='🌱 Desafío 5: ¿Qué pasaría si...?';
+ q.innerHTML='<p>En Tecnología, una decisión puede cambiar lo que sucede después. <b>Leé cada situación y elegí qué podría pasar.</b></p><div class="feedbackBox" style="font-size:22px">💭 Pensá en la causa y en su consecuencia.</div><div id="whatIf" style="display:grid;gap:18px;max-width:900px;margin:auto"></div>';
+ const rounds=[
+ ['💡 Una lámpara tiene un foco quemado. ¿Qué pasará si colocamos un foco que funciona?', ['La lámpara podrá volver a dar luz.','La lámpara se convertirá en una radio.','La lámpara necesitará una rueda para funcionar.'],0],
+ ['🚲 La cadena de una bicicleta está muy seca. ¿Qué puede pasar si la lubricamos correctamente?', ['La bicicleta tendrá una pantalla más grande.','La cadena podrá moverse con mayor facilidad.','La bicicleta perderá sus ruedas.'],1],
+ ['📦 Una caja tiene un objeto frágil adentro. ¿Qué puede pasar si la protegemos con material de relleno?', ['El objeto tendrá menos protección.','La caja dejará de ser una caja.','El objeto estará más protegido durante el traslado.'],2],
+ ['🔌 Un aparato eléctrico no se está usando. ¿Qué decisión ayuda a evitar un gasto innecesario de energía?', ['Apagarlo cuando no se necesita.','Encenderlo durante todo el día.','Taparlo sin apagarlo.'],0],
+ ['🪑 Una silla tiene un tornillo flojo. ¿Qué puede pasar si ajustamos correctamente el tornillo?', ['La silla se transforma en una mesa.','La unión puede quedar más firme y segura.','La silla deja de necesitar sus patas.'],1]
+ ];
+ let i=0; const area=document.getElementById('whatIf');
+ function showWhat(){
+   area.innerHTML='<div class="feedbackBox" style="font-size:20px"><b>Situación '+(i+1)+' de '+rounds.length+'</b><br>'+rounds[i][0]+'</div>';
+   mix(rounds[i][1].map((v,j)=>[v,j])).forEach(o=>{const b=document.createElement('button');b.className='toolCard';b.style.cssText='min-height:82px;padding:18px;white-space:normal;text-align:left;font-size:18px;line-height:1.3';b.textContent=o[0];b.onclick=()=>{if(o[1]===rounds[i][2]){b.classList.add('correct');i++;if(i===rounds.length)pass('🌟 ¡Excelente! Pudiste anticipar consecuencias y relacionar decisiones tecnológicas con sus resultados.');else showWhat()}else fail('🤔 Pensá qué cambia después de tomar esa decisión y volvé a leer las opciones.')} ;area.appendChild(b)});
+ }
+ showWhat();
+}}
+render();
+}
+
+function goHome(){hideAll();document.getElementById("home").classList.remove("hidden")}
+function cambiarAlumno(){document.getElementById("registroInicio").style.display="flex"}
+function goGrade(){showGrade(currentGrade)}
+</script>
+</body>
+</html>
